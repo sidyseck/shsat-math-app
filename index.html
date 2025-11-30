@@ -161,31 +161,44 @@
     </p>
 
     <div class="controls">
-      <div>
-        <label for="topicSelect">Topic</label>
-        <select id="topicSelect">
-          <option value="mixed">Mixed</option>
-          <option value="percent">Percent</option>
-          <option value="ratios">Ratios & proportions</option>
-          <option value="algebra">Algebra</option>
-          <option value="geometry">Geometry (no diagrams)</option>
-        </select>
-      </div>
-      <div>
-        <label for="difficultySelect">Difficulty</label>
-        <select id="difficultySelect">
-          <option value="easy">Easy</option>
-          <option value="medium" selected>Medium</option>
-          <option value="hard">Hard</option>
-        </select>
-      </div>
-      <div>
-        <label for="countInput"># of questions</label>
-        <input id="countInput" type="number" min="1" max="10" value="5" />
-      </div>
-      <button class="btn-primary" id="generateBtn">Generate</button>
-      <div class="status" id="statusText">Idle</div>
-    </div>
+  <div>
+    <label for="subjectSelect">Subject</label>
+    <select id="subjectSelect">
+      <option value="math" selected>Math</option>
+      <option value="ela">ELA</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="topicSelect">Topic / Type</label>
+    <select id="topicSelect">
+      <!-- For math (default) -->
+      <option value="mixed">Mixed</option>
+      <option value="percent">Percent</option>
+      <option value="ratios">Ratios & proportions</option>
+      <option value="algebra">Algebra</option>
+      <option value="geometry">Geometry (no diagrams)</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="difficultySelect">Difficulty</label>
+    <select id="difficultySelect">
+      <option value="easy">Easy</option>
+      <option value="medium" selected>Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="countInput"># of questions</label>
+    <input id="countInput" type="number" min="1" max="10" value="5" />
+  </div>
+
+  <button class="btn-primary" id="generateBtn">Generate</button>
+  <div class="status" id="statusText">Idle</div>
+</div>
+
 
     <div id="questionsContainer"></div>
   </div>
@@ -193,29 +206,63 @@
   <script>
     const generateBtn = document.getElementById("generateBtn");
     const statusText = document.getElementById("statusText");
+    const subjectSelect = document.getElementById("subjectSelect");
     const topicSelect = document.getElementById("topicSelect");
     const difficultySelect = document.getElementById("difficultySelect");
     const countInput = document.getElementById("countInput");
     const questionsContainer = document.getElementById("questionsContainer");
+// Swap topic options based on subject (Math vs ELA)
+subjectSelect.addEventListener("change", () => {
+  const subject = subjectSelect.value;
+  topicSelect.innerHTML = "";
+
+  if (subject === "math") {
+    [
+      ["mixed", "Mixed"],
+      ["percent", "Percent"],
+      ["ratios", "Ratios & proportions"],
+      ["algebra", "Algebra"],
+      ["geometry", "Geometry (no diagrams)"],
+    ].forEach(([value, label]) => {
+      const opt = document.createElement("option");
+      opt.value = value;
+      opt.textContent = label;
+      topicSelect.appendChild(opt);
+    });
+  } else {
+    // ELA topics/types
+    [
+      ["reading", "Reading comprehension (passages)"],
+      ["editing", "Revising & editing sentences"],
+      ["mixed", "Mixed ELA"],
+    ].forEach(([value, label]) => {
+      const opt = document.createElement("option");
+      opt.value = value;
+      opt.textContent = label;
+      topicSelect.appendChild(opt);
+    });
+  }
+});
 
     let currentQuestions = [];
 
     generateBtn.addEventListener("click", async () => {
-      const topic = topicSelect.value;
-      const difficulty = difficultySelect.value;
-      const count = Math.max(1, Math.min(10, parseInt(countInput.value || "5", 10)));
+  const subject = subjectSelect.value;           // "math" or "ela"
+  const topic = topicSelect.value;
+  const difficulty = difficultySelect.value;
+  const count = Math.max(1, Math.min(10, parseInt(countInput.value || "5", 10)));
 
-      generateBtn.disabled = true;
-      statusText.textContent = "Generating questions...";
-      questionsContainer.innerHTML = "";
-      currentQuestions = [];
+  generateBtn.disabled = true;
+  statusText.textContent = "Generating questions...";
+  questionsContainer.innerHTML = "";
+  currentQuestions = [];
 
-      try {
-        const res = await fetch("/.netlify/functions/generate-questions", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic, difficulty, count })
-        });
+  try {
+    const res = await fetch("/.netlify/functions/generate-questions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ subject, topic, difficulty, count })
+    });
 
         if (!res.ok) {
           throw new Error("Server error " + res.status);
@@ -245,10 +292,22 @@
         header.innerHTML = `<span>Question ${idx + 1}</span><span>${q.topic || ""} · ${q.difficulty || ""}</span>`;
         card.appendChild(header);
 
-        const text = document.createElement("div");
-        text.className = "question-text";
-        text.textContent = q.prompt;
-        card.appendChild(text);
+        // Optional passage (for ELA reading)
+        if (q.passage) {
+  const passage = document.createElement("div");
+  passage.style.fontSize = "0.85rem";
+  passage.style.whiteSpace = "pre-wrap";
+  passage.style.marginBottom = "8px";
+  passage.style.color = "#e5e7eb";
+  passage.textContent = q.passage;
+  card.appendChild(passage);
+}
+
+      const text = document.createElement("div");
+      text.className = "question-text";
+      text.textContent = q.prompt;
+      card.appendChild(text);
+
 
         const list = document.createElement("ul");
         list.className = "choices";
@@ -306,4 +365,3 @@
   </script>
 </body>
 </html>
-

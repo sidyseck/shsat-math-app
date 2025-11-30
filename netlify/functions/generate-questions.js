@@ -10,6 +10,7 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body || "{}");
+    const subject = body.subject || "math"; // "math" or "ela"
     const topic = body.topic || "mixed";
     const difficulty = body.difficulty || "medium";
     const count = Math.max(1, Math.min(10, Number(body.count) || 5));
@@ -22,7 +23,11 @@ exports.handler = async (event) => {
       };
     }
 
-    const userPrompt = `
+    // Build subject-specific instructions
+    let userPrompt;
+
+    if (subject === "math") {
+      userPrompt = `
 You are generating SHSAT-style MATH multiple-choice questions for a 7th-grade student.
 
 Constraints:
@@ -52,6 +57,51 @@ Return ONLY valid JSON with this shape:
 
 There should be exactly ${count} questions.
 `;
+    } else {
+      // ELA mode: reading + editing SHSAT-style
+      userPrompt = `
+You are generating SHSAT-style ELA multiple-choice questions for a 7th-grade student.
+
+Overall requirements:
+- ONLY English Language Arts tasks.
+- Two main types:
+  1) READING COMPREHENSION with a short passage (3–6 short paragraphs) and questions about meaning, inference, vocabulary-in-context, structure, or author's purpose.
+  2) REVISING & EDITING short sentences or very short paragraphs (grammar, punctuation, clarity, word choice).
+- Difficulty: ${difficulty} (easy/medium/hard).
+- Topic preference: ${topic}.
+  - If topic === "reading": prefer reading-comprehension style questions.
+  - If topic === "editing": prefer revising & editing style questions.
+  - If topic === "mixed": mix both styles.
+
+JSON format requirements:
+- You may reuse the SAME passage text for multiple reading questions; to make it simple, include the passage text in a \`passage\` field on EACH reading question that needs it.
+- Each question must have EXACTLY 4 answer choices (A, B, C, D).
+- Exactly ONE choice is correct.
+- For READING questions:
+  - Use topic: "reading"
+  - Include a \`passage\` string field with the passage text.
+- For EDITING questions:
+  - Use topic: "editing"
+  - They can be self-contained (no \`passage\` field needed), or include a short context sentence if needed.
+
+Return ONLY valid JSON with this shape:
+
+{
+  "questions": [
+    {
+      "prompt": "question text here",
+      "passage": "passage text here (only for reading questions, otherwise omit this field)",
+      "choices": ["choice A", "choice B", "choice C", "choice D"],
+      "correctIndex": 0,
+      "topic": "reading | editing | mixed",
+      "difficulty": "easy | medium | hard"
+    }
+  ]
+}
+
+There should be exactly ${count} questions.
+`;
+    }
 
     // Call OpenAI Chat Completions API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -61,13 +111,12 @@ There should be exactly ${count} questions.
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini", // adjust if you prefer another model
+        model: "gpt-4o-mini", // or another suitable model
         messages: [
-          { role: "system", content: "You are a careful SHSAT-style math question generator." },
+          { role: "system", content: "You are a careful SHSAT-style question generator. Always return valid JSON." },
           { role: "user", content: userPrompt },
         ],
         temperature: 0.6,
-        // Ask explicitly for JSON so it's easier to parse
         response_format: { type: "json_object" },
       }),
     });
@@ -124,4 +173,3 @@ There should be exactly ${count} questions.
     };
   }
 };
-
