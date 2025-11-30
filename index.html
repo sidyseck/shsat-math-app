@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SHSAT Math Practice</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #020617;
+      color: #f9fafb;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+    .app {
+      width: 100%;
+      max-width: 900px;
+      background: #030712;
+      border-radius: 20px;
+      padding: 20px 18px 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 12px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    h1 {
+      font-size: 1.4rem;
+      margin: 0;
+    }
+    .chip {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: #9ca3af;
+    }
+    .subtitle {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 16px;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    label {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      display: block;
+      margin-bottom: 4px;
+    }
+    select, input[type="number"] {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: #020617;
+      color: #f9fafb;
+      font-size: 0.9rem;
+      min-width: 120px;
+    }
+    button {
+      cursor: pointer;
+      border-radius: 999px;
+      border: none;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #38bdf8, #22c55e);
+      color: #0b1120;
+      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.5);
+    }
+    .btn-primary:disabled {
+      opacity: 0.5;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+    .status {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-left: auto;
+    }
+    .question-card {
+      background: #020617;
+      border-radius: 14px;
+      padding: 12px 12px 14px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      margin-bottom: 10px;
+    }
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+    .question-text {
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+    .choices {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 6px;
+    }
+    .choice {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: #020617;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .choice input {
+      accent-color: #38bdf8;
+      cursor: pointer;
+    }
+    .check-btn {
+      margin-top: 10px;
+    }
+    .feedback {
+      font-size: 0.85rem;
+      margin-top: 6px;
+    }
+    .feedback.correct { color: #4ade80; }
+    .feedback.incorrect { color: #f97373; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <h1>SHSAT Math Practice</h1>
+      <div class="chip">LLM-generated · For 7th grade</div>
+    </div>
+    <p class="subtitle">
+      Choose a topic and difficulty, generate a small set of questions, and practice. Answers are checked locally.
+    </p>
+
+    <div class="controls">
+      <div>
+        <label for="topicSelect">Topic</label>
+        <select id="topicSelect">
+          <option value="mixed">Mixed</option>
+          <option value="percent">Percent</option>
+          <option value="ratios">Ratios & proportions</option>
+          <option value="algebra">Algebra</option>
+          <option value="geometry">Geometry (no diagrams)</option>
+        </select>
+      </div>
+      <div>
+        <label for="difficultySelect">Difficulty</label>
+        <select id="difficultySelect">
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+      <div>
+        <label for="countInput"># of questions</label>
+        <input id="countInput" type="number" min="1" max="10" value="5" />
+      </div>
+      <button class="btn-primary" id="generateBtn">Generate</button>
+      <div class="status" id="statusText">Idle</div>
+    </div>
+
+    <div id="questionsContainer"></div>
+  </div>
+
+  <script>
+    const generateBtn = document.getElementById("generateBtn");
+    const statusText = document.getElementById("statusText");
+    const topicSelect = document.getElementById("topicSelect");
+    const difficultySelect = document.getElementById("difficultySelect");
+    const countInput = document.getElementById("countInput");
+    const questionsContainer = document.getElementById("questionsContainer");
+
+    let currentQuestions = [];
+
+    generateBtn.addEventListener("click", async () => {
+      const topic = topicSelect.value;
+      const difficulty = difficultySelect.value;
+      const count = Math.max(1, Math.min(10, parseInt(countInput.value || "5", 10)));
+
+      generateBtn.disabled = true;
+      statusText.textContent = "Generating questions...";
+      questionsContainer.innerHTML = "";
+      currentQuestions = [];
+
+      try {
+        const res = await fetch("/.netlify/functions/generate-questions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic, difficulty, count })
+        });
+
+        if (!res.ok) {
+          throw new Error("Server error " + res.status);
+        }
+
+        const data = await res.json();
+        currentQuestions = data.questions || [];
+        renderQuestions();
+        statusText.textContent = `Loaded ${currentQuestions.length} question(s).`;
+      } catch (err) {
+        console.error(err);
+        statusText.textContent = "Error generating questions.";
+        questionsContainer.innerHTML = "<p>Something went wrong. Try again.</p>";
+      } finally {
+        generateBtn.disabled = false;
+      }
+    });
+
+    function renderQuestions() {
+      questionsContainer.innerHTML = "";
+      currentQuestions.forEach((q, idx) => {
+        const card = document.createElement("div");
+        card.className = "question-card";
+
+        const header = document.createElement("div");
+        header.className = "question-header";
+        header.innerHTML = `<span>Question ${idx + 1}</span><span>${q.topic || ""} · ${q.difficulty || ""}</span>`;
+        card.appendChild(header);
+
+        const text = document.createElement("div");
+        text.className = "question-text";
+        text.textContent = q.prompt;
+        card.appendChild(text);
+
+        const list = document.createElement("ul");
+        list.className = "choices";
+
+        (q.choices || []).forEach((choiceText, cIdx) => {
+          const li = document.createElement("li");
+          li.className = "choice";
+
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = "q_" + idx;
+          input.value = cIdx;
+
+          const label = document.createElement("span");
+          label.textContent = choiceText;
+
+          li.appendChild(input);
+          li.appendChild(label);
+          list.appendChild(li);
+        });
+
+        card.appendChild(list);
+
+        const checkBtn = document.createElement("button");
+        checkBtn.className = "btn-primary check-btn";
+        checkBtn.textContent = "Check answer";
+
+        const feedback = document.createElement("div");
+        feedback.className = "feedback";
+
+        checkBtn.addEventListener("click", () => {
+          const selected = card.querySelector("input[type='radio']:checked");
+          if (!selected) {
+            feedback.textContent = "Pick an answer first.";
+            feedback.className = "feedback";
+            return;
+          }
+          const chosen = parseInt(selected.value, 10);
+          if (chosen === q.correctIndex) {
+            feedback.textContent = "Correct!";
+            feedback.className = "feedback correct";
+          } else {
+            const letters = ["A", "B", "C", "D"];
+            feedback.textContent = `Not quite. Correct answer is ${letters[q.correctIndex] || ""}.`;
+            feedback.className = "feedback incorrect";
+          }
+        });
+
+        card.appendChild(checkBtn);
+        card.appendChild(feedback);
+
+        questionsContainer.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
+
