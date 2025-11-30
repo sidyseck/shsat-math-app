@@ -32,7 +32,7 @@ You are generating SHSAT-style MATH multiple-choice questions for a 7th-grade st
 
 Goals:
 - Create questions that look and feel like real SHSAT math.
-- Make sure each question is CORRECT and has exactly ONE correct answer.
+- Do NOT include the correct answer or solution. Just write the question and its answer choices.
 
 Constraints:
 - Only math, NO reading comprehension.
@@ -41,21 +41,8 @@ Constraints:
 - Difficulty: ${difficulty} (easy/medium/hard).
 - Topic preference: ${topic}. If topic === "mixed", mix across common SHSAT math topics.
 - Each question must have EXACTLY 4 answer choices (A, B, C, D).
-- Exactly ONE choice is correct.
-- Questions should be solvable without a calculator.
-
-For each question:
-1. First, carefully THINK THROUGH and SOLVE the question.
-2. Decide which choice is correct.
-3. Set:
-   - correctIndex = 0 for A, 1 for B, 2 for C, 3 for D.
-   - correctAnswer = the FULL TEXT of the correct choice.
-4. In the "solution" field, show the step-by-step reasoning you used to compute the correct answer.
-
-Very important:
-- Check that plugging the correct answer back into the question actually works.
-- Make sure there is no other choice that also satisfies the conditions.
-- If you notice any mismatch between your reasoning and correctIndex, FIX your correctIndex and correctAnswer before returning the JSON.
+- Do not say which choice is correct.
+- The questions should be solvable without a calculator.
 
 Return ONLY valid JSON with this exact shape:
 
@@ -64,11 +51,8 @@ Return ONLY valid JSON with this exact shape:
     {
       "prompt": "question text here",
       "choices": ["choice A", "choice B", "choice C", "choice D"],
-      "correctIndex": 0,
-      "correctAnswer": "choice A",
       "topic": "percent | ratios | algebra | geometry | mixed",
-      "difficulty": "easy | medium | hard",
-      "solution": "step-by-step explanation of how to solve the question"
+      "difficulty": "easy | medium | hard"
     }
   ]
 }
@@ -178,6 +162,108 @@ There should be exactly ${count} questions.
         body: JSON.stringify({ error: "Invalid questions format from model" }),
       };
     }
+let questions = questionsPayload.questions;
+
+// If math: run a solver pass to find the correct answer for each question
+if (subject === "math") {
+  const solvedQuestions = [];
+
+  for (let idx = 0; idx < questions.length; idx++) {
+    const q = questions[idx];
+    if (!q || !Array.isArray(q.choices) || q.choices.length !== 4) {
+      console.error("Skipping invalid question structure:", q);
+      continue;
+    }
+
+    const solverPrompt = `
+You are solving a SHSAT-style math question. Choose which answer choice is correct.
+
+Question:
+${q.prompt}
+
+Choices:
+A) ${q.choices[0]}
+B) ${q.choices[1]}
+C) ${q.choices[2]}
+D) ${q.choices[3]}
+
+Respond ONLY with JSON of this shape:
+
+{
+  "correctIndex": 0,
+  "solution": "step-by-step explanation here"
+}
+
+Where:
+- correctIndex is 0 for A, 1 for B, 2 for C, 3 for D.
+- solution clearly explains how you got the answer.
+`;
+
+    const solverResponse = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gpt-4o", // or "gpt-4o-mini" if you prefer, but 4o is more reliable
+        messages: [
+          { role: "system", content: "You are a careful SHSAT math solver. Always return valid JSON." },
+          { role: "user", content: solverPrompt },
+        ],
+        temperature: 0.1,
+        response_format: { type: "json_object" },
+      }),
+    });
+
+    if (!solverResponse.ok) {
+      const solverErr = await solverResponse.text();
+      console.error("Solver API error:", solverErr);
+      continue; // skip this question if solver fails
+    }
+
+    const solverData = await solverResponse.json();
+    const solverContent = solverData.choices?.[0]?.message?.content;
+
+    if (!solverContent) {
+      console.error("No content from solver for question:", q);
+      continue;
+    }
+
+    let solverResult;
+    try {
+      solverResult = JSON.parse(solverContent);
+    } catch (e) {
+      console.error("Failed to parse solver JSON:", solverContent);
+      continue;
+    }
+
+    const ci = solverResult.correctIndex;
+    if (
+      !Number.isInteger(ci) ||
+      ci < 0 ||
+      ci >= q.choices.length
+    ) {
+      console.error("Solver returned invalid correctIndex:", solverResult);
+      continue;
+    }
+
+    // Attach solver result to the question
+    q.correctIndex = ci;
+    q.correctAnswer = q.choices[ci];
+    q.solution = solverResult.solution || "";
+
+    solvedQuestions.push(q);
+  }
+
+  questions = solvedQuestions;
+} else {
+  // Non-math (ELA) branch: you can keep your existing sanity checks here if you like
+  questions = questions.filter(q => q && Array.isArray(q.choices) && q.choices.length === 4);
+}
+
+// Replace payload questions with the final list
+questionsPayload.questions = questions;
 
     return {
       statusCode: 200,
