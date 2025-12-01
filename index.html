@@ -338,23 +338,64 @@ subjectSelect.addEventListener("change", () => {
         const feedback = document.createElement("div");
         feedback.className = "feedback";
 
-        checkBtn.addEventListener("click", () => {
-          const selected = card.querySelector("input[type='radio']:checked");
-          if (!selected) {
-            feedback.textContent = "Pick an answer first.";
-            feedback.className = "feedback";
-            return;
-          }
-          const chosen = parseInt(selected.value, 10);
-          if (chosen === q.correctIndex) {
-            feedback.textContent = "Correct!";
-            feedback.className = "feedback correct";
-          } else {
-            const letters = ["A", "B", "C", "D"];
-            feedback.textContent = `Not quite. Correct answer is ${letters[q.correctIndex] || ""}.`;
-            feedback.className = "feedback incorrect";
-          }
-        });
+        checkBtn.addEventListener("click", async () => {
+  const selected = card.querySelector("input[type='radio']:checked");
+  if (!selected) {
+    feedback.textContent = "Pick an answer first.";
+    feedback.className = "feedback";
+    return;
+  }
+
+  const chosenIndex = parseInt(selected.value, 10);
+  feedback.textContent = "Checking...";
+  feedback.className = "feedback";
+
+  try {
+    const res = await fetch("/.netlify/functions/check-answer", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        subject: subjectSelect.value,        // "math" or "ela"
+        question: {
+          prompt: q.prompt,
+          choices: q.choices,
+          userIndex: chosenIndex
+        }
+      })
+    });
+
+    if (!res.ok) {
+      throw new Error("Server error " + res.status);
+    }
+
+    const result = await res.json();
+    const letters = ["A", "B", "C", "D"];
+    const correctLetter = letters[result.correctIndex] || "?";
+
+    if (result.isCorrect) {
+      feedback.textContent = `Correct! 🎉`;
+      feedback.className = "feedback correct";
+    } else {
+      feedback.textContent = `Not quite. Correct answer is ${correctLetter}.`;
+      feedback.className = "feedback incorrect";
+    }
+
+    // Optional: show solution explanation
+    if (result.solution) {
+      const expl = document.createElement("div");
+      expl.style.marginTop = "4px";
+      expl.style.fontSize = "0.8rem";
+      expl.style.whiteSpace = "pre-wrap";
+      expl.textContent = result.solution;
+      card.appendChild(expl);
+    }
+
+  } catch (err) {
+    console.error(err);
+    feedback.textContent = "Error checking answer. Try again.";
+    feedback.className = "feedback";
+  }
+});
 
         card.appendChild(checkBtn);
         card.appendChild(feedback);
