@@ -1,5 +1,42 @@
 // netlify/functions/check-answer.js
 
+// Helper: convert a choice string like "3/8 cup" or "1 1/2" or "0.375" to a number
+function parseChoiceToNumber(raw) {
+  if (raw == null) return NaN;
+
+  const cleaned = raw.replace(/,/g, "").trim().toLowerCase();
+
+  // 1) Mixed fraction: "1 3/8", "-2 1/4"
+  let m = cleaned.match(/^(-?\d+)\s+(\d+)\s*\/\s*(\d+)/);
+  if (m) {
+    const whole = parseInt(m[1], 10);
+    const num = parseInt(m[2], 10);
+    const den = parseInt(m[3], 10);
+    if (den !== 0) {
+      return whole + (whole >= 0 ? num / den : -num / den);
+    }
+  }
+
+  // 2) Simple fraction: "3/8", "-5/6"
+  m = cleaned.match(/^(-?\d+)\s*\/\s*(\d+)/);
+  if (m) {
+    const num = parseInt(m[1], 10);
+    const den = parseInt(m[2], 10);
+    if (den !== 0) {
+      return num / den;
+    }
+  }
+
+  // 3) Decimal or integer, maybe with units: "0.375 cup", "5 cm"
+  m = cleaned.match(/-?\d+(\.\d+)?/);
+  if (m) {
+    const val = parseFloat(m[0]);
+    if (!Number.isNaN(val)) return val;
+  }
+
+  return NaN;
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return {
@@ -49,7 +86,7 @@ Tasks:
 Important:
 - finalAnswer must be a NUMBER (no units, no commas) that we can compare to the answer choices separately.
 - Do NOT put "A", "B", "C", "D", "option", or "choice" into finalAnswer. Only use a pure numeric value.
-- If you get a non-integer, return it as a decimal number (e.g., 3.5).
+- If you get a non-integer, return it as a decimal number (e.g., 0.375).
 
 Respond ONLY with JSON of this exact shape:
 
@@ -98,7 +135,7 @@ Respond ONLY with JSON of this exact shape:
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4o", // you can switch to gpt-4o-mini for cheaper, but 4o is more reliable
+        model: "gpt-4o", // or "gpt-4o-mini" if you want cheaper, but 4o is more reliable
         messages: [
           {
             role: "system",
@@ -145,14 +182,13 @@ Respond ONLY with JSON of this exact shape:
 
     // Branch based on subject
     if (subject === "math") {
-      // Expect { finalAnswer: number, solution: string }
+      // Expect { finalAnswer: number|string, solution: string }
       let faRaw = result.finalAnswer;
       let finalAnswer;
 
       if (typeof faRaw === "number") {
         finalAnswer = faRaw;
       } else {
-        // Try to parse if it's a string like "24" or "24.0"
         const parsed = parseFloat(String(faRaw).replace(/,/g, "").trim());
         if (!Number.isNaN(parsed)) {
           finalAnswer = parsed;
@@ -170,10 +206,8 @@ Respond ONLY with JSON of this exact shape:
       // Map finalAnswer to one of the 4 choices
       let correctIndex = -1;
       for (let i = 0; i < choices.length; i++) {
-        const raw = (choices[i] ?? "").toString().trim();
-
-        // Try numeric comparison
-        const num = parseFloat(raw.replace(/,/g, ""));
+        const raw = (choices[i] ?? "").toString();
+        const num = parseChoiceToNumber(raw);
         if (!Number.isNaN(num) && Math.abs(num - finalAnswer) < 1e-6) {
           correctIndex = i;
           break;
