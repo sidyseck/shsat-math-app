@@ -33,28 +33,22 @@ exports.handler = async (event) => {
     let solverPrompt;
 
     if (subject === "math") {
-      // Math: ask for a numeric finalAnswer, we'll map it to choices ourselves
+      // MATH: do NOT show choices; ask only for numeric finalAnswer
       solverPrompt = `
-You are solving a SHSAT-style MATH multiple-choice question.
+You are solving a SHSAT-style MATH question.
 
 Question:
 ${prompt}
 
-Choices:
-A) ${choices[0]}
-B) ${choices[1]}
-C) ${choices[2]}
-D) ${choices[3]}
-
 Tasks:
 1. Carefully solve the math problem and compute the exact numeric result (call it finalAnswer).
-2. DO NOT think in terms of A/B/C/D when computing finalAnswer. Just focus on the math.
+2. DO NOT think in terms of answer choices, letters, or options. Ignore A/B/C/D completely.
 3. finalAnswer must be the actual numeric value that correctly solves the problem.
-4. At the end, you MAY mention which option corresponds to finalAnswer in the explanation, but NOT in the finalAnswer value itself.
+4. In your explanation, you may show intermediate numeric steps, but you must not refer to "option A", "choice C", etc.
 
 Important:
-- finalAnswer must be a NUMBER (no units, no commas) that we can compare to the choices.
-- Do NOT put "A", "B", "C", "D" into finalAnswer. Only use a pure numeric value.
+- finalAnswer must be a NUMBER (no units, no commas) that we can compare to the answer choices separately.
+- Do NOT put "A", "B", "C", "D", "option", or "choice" into finalAnswer. Only use a pure numeric value.
 - If you get a non-integer, return it as a decimal number (e.g., 3.5).
 
 Respond ONLY with JSON of this exact shape:
@@ -104,7 +98,7 @@ Respond ONLY with JSON of this exact shape:
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4o", // you can switch to gpt-4o-mini if you want cheaper, but 4o is more reliable
+        model: "gpt-4o", // you can switch to gpt-4o-mini for cheaper, but 4o is more reliable
         messages: [
           {
             role: "system",
