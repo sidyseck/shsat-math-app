@@ -27,35 +27,61 @@ exports.handler = async (event) => {
     let userPrompt;
 
     if (subject === "math") {
-  userPrompt = `
-You are generating SHSAT-style MATH multiple-choice questions.
+  userPrompt = `Your job:
+- Create questions that look, feel, and behave like real NYC SHSAT Math questions.
+- Do NOT include the correct answer or any solution. Just write the question and answer choices.
 
-Goals:
-- Create questions that look and feel like real SHSAT math.
-- Do NOT include the correct answer or solution. Just write the question and its answer choices.
+Core style (very important):
+- Match the difficulty and flavor of official NYCDOE SHSAT math questions (2024 samples).
+- Every question is a compact, information-dense word problem.
+- The student should need to translate the story into equations/relationships and reason for several steps.
 
-Rules:
-- Strictly follow New York City's SHSAT style and difficulty.
-- Each question must require 2–4 math reasoning steps.
+Reasoning requirements:
+- Each question must require at least 3 distinct math reasoning steps (set up, transform, solve, interpret).
+- Avoid one-step or “plug in numbers and compute once” problems.
+- At most 1 small arithmetic step can be trivial; the rest must involve reasoning (setting proportions, equations, or combining conditions).
+
+Question format:
 - 100% must be word problems.
-- Vary real-life contexts: money, school, distance, time, geometry, charts, ratios, averages, percent, inequality, integers.
-- NO direct "compute this" arithmetic questions.
-- Use grade 8 math vocabulary: "constant rate", "increase proportionally", "scale factor", "term", etc.
-- Use *different* question styles. Avoid repetitive structures.
-- Do NOT include the correct answer letter in the explanation.
-- Choices MUST be 4 numeric options, plausible distractors.
-- Return ONLY the JSON in this exact structure:
+- NO bare “compute” questions like “What is 35 × 12?”
+- Use realistic contexts: money, discounts, tax, simple interest, time/distance/rate, averages, mixtures, test scores, geometry in context (perimeter, area, angles, volume), tables, simple charts described in words, ratios and proportions, integer operations, inequalities.
+- Use grade 7–8 math vocabulary: “constant rate,” “proportional,” “scale factor,” “linear relationship,” “term,” “expression,” “inequality,” etc.
+- Hide the math slightly inside the wording so the student has to read carefully.
+
+Topic coverage:
+- Topics allowed: fractions, ratios, proportions, percentages (including percent increase/decrease), simple and multi-step equations, inequalities, integer arithmetic, absolute value in context, geometry (described in words), basic probability, averages, and interpreting small data tables in words.
+- Use the provided topic preference:
+  - If topic === "mixed": mix across common SHSAT math topics.
+  - Otherwise, focus primarily on that topic but still allow secondary concepts to appear (for example, a geometry problem that also requires solving an equation).
+
+Difficulty:
+- Difficulty: \${difficulty} (easy / medium / hard).
+- "Easy": still multi-step, but with cleaner numbers and fewer conditions.
+- "Medium": realistic SHSAT average difficulty with 3 to 4 steps and at least one trap (e.g., extra information or a subtle condition).
+- "Hard": 4 to 5 steps, layered conditions, or combined topics (e.g., percent + ratio, geometry + algebra). The path to the answer should not be obvious.
+
+Numbers and realism:
+- Use mostly non-trivial numbers (e.g., 18, 27, 45, 72, 150, 240) rather than very small or “too clean” ones, unless the difficulty is easy.
+- Allow fractions or decimals in choices when natural (e.g., 1.5, 2.4, 3/5).
+- Keep arithmetic within what a strong 8th grader can do without a calculator.
+
+Answer choices:
+- Each question must have EXACTLY 4 answer choices (A, B, C, D).
+- Choices MUST be numeric (integers, fractions, or decimals).
+- Wrong choices must be plausible distractors that come from:
+  - common misreads (missing a condition),
+  - forgetting to convert a percent or rate correctly,
+  - using the wrong total/denominator in a ratio,
+  - making a typical order-of-operations or equation setup error.
+- Do NOT say or hint which choice is correct.
+- Do NOT include phrases like “Correct answer:”, “The answer is”, or any solution steps.
 
 Constraints:
-- Only math, NO reading comprehension.
-- NO diagrams, NO graphs, NO images. Everything must be in text.
-- Topics: fractions, ratios, proportions, percentages, basic algebra, integer arithmetic, and geometry described in words only.
-- Difficulty: ${difficulty} (easy/medium/hard).
-- Topic preference: ${topic}. If topic === "mixed", mix across common SHSAT math topics.
-- Each question must have EXACTLY 4 answer choices (A, B, C, D).
-- Do not say which choice is correct.
-- The questions should be solvable without a calculator.
+- Only math; NO reading-comprehension-style questions.
+- NO diagrams, NO graphs, NO images. If needed, describe any table or situation in words.
+- Questions must be solvable without a calculator by a well-prepared SHSAT test-taker within about 1–3 minutes.
 
+Output format (strict JSON only):
 Return ONLY valid JSON with this exact shape:
 
 {
