@@ -28,11 +28,23 @@ exports.handler = async (event) => {
 
     if (subject === "math") {
   userPrompt = `
-You are generating SHSAT-style MATH multiple-choice questions for a 7th-grade student.
+You are generating SHSAT-style MATH multiple-choice questions.
 
 Goals:
 - Create questions that look and feel like real SHSAT math.
 - Do NOT include the correct answer or solution. Just write the question and its answer choices.
+
+Rules:
+- Strictly follow New York City's SHSAT style and difficulty.
+- Each question must require 2–4 math reasoning steps.
+- 100% must be word problems.
+- Vary real-life contexts: money, school, distance, time, geometry, charts, ratios, averages, percent, inequality, integers.
+- NO direct "compute this" arithmetic questions.
+- Use grade 8 math vocabulary: "constant rate", "increase proportionally", "scale factor", "term", etc.
+- Use *different* question styles. Avoid repetitive structures.
+- Do NOT include the correct answer letter in the explanation.
+- Choices MUST be 4 numeric options, plausible distractors.
+- Return ONLY the JSON in this exact structure:
 
 Constraints:
 - Only math, NO reading comprehension.
