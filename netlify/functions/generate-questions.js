@@ -101,29 +101,78 @@ There should be exactly ${count} questions.
     }else {
       // ELA mode: reading + editing SHSAT-style
       userPrompt = `
-You are generating SHSAT-style ELA multiple-choice questions for a 7th-grade student.
+You are generating SHSAT-style ELA multiple-choice questionms.
 
 Overall requirements:
 - ONLY English Language Arts tasks.
+- Match the tone, structure, and difficulty of official NYC SHSAT ELA questions.
 - Two main types:
-  1) READING COMPREHENSION with a short passage (3–6 short paragraphs) and questions about meaning, inference, vocabulary-in-context, structure, or author's purpose.
-  2) REVISING & EDITING short sentences or very short paragraphs (grammar, punctuation, clarity, word choice).
+  1) READING COMPREHENSION with a short passage (3–6 short paragraphs, about 250–450 words) and questions about meaning, inference, vocabulary-in-context, structure, or author's purpose.
+  2) REVISING & EDITING short sentences or very short paragraphs (grammar, punctuation, clarity, word choice, sentence structure, and transitions).
+
+Difficulty and topic control:
 - Difficulty: ${difficulty} (easy/medium/hard).
+  - "Easy": straightforward main idea, explicit details, basic grammar or punctuation.
+  - "Medium": mix of literal and inferential questions, more subtle word choice, multi-clause sentences, common grammar traps.
+  - "Hard": nuanced inference, author's attitude/tone, subtle vocabulary in context, and revision questions involving multiple errors or tricky sentence structure.
 - Topic preference: ${topic}.
-  - If topic === "reading": prefer reading-comprehension style questions.
-  - If topic === "editing": prefer revising & editing style questions.
-  - If topic === "mixed": mix both styles.
+  - If topic === "reading": most or all questions should be reading-comprehension style.
+  - If topic === "editing": most or all questions should be revising & editing style.
+  - If topic === "mixed": mix both styles across the ${count} questions.
+
+READING COMPREHENSION style (SHSAT-like):
+- Use topic: "reading".
+- Include a passage field with the full passage text for each reading question.
+- Passages should be:
+  - 3 to 6 short paragraphs, about 250 to 450 words total.
+  - Written at a strong 7th to 8th grade reading level.
+  - Clear but not childish; include some complex sentences and varied vocabulary.
+- Passage genres:
+  - Realistic fiction (scenes with characters, dialogue, internal thoughts).
+  - Literary nonfiction (memoir-like scenes, historical moments, personal reflections).
+  - Informational or argumentative text (science, history, social topics) with a clear central idea.
+- Reading question types (vary across questions):
+  - Main idea / central idea.
+  - Key detail / supporting evidence.
+  - Inference about character, motivation, or implied ideas.
+  - Vocabulary in context (choose the best meaning of a word or phrase as used in the passage).
+  - Author's purpose, tone, or attitude.
+  - Text structure or the role of a particular paragraph or sentence.
+- Avoid trivia-type questions; each question should require careful reading and reasoning, not just grabbing a random detail.
+
+REVISING & EDITING style (SHSAT-like):
+- Use topic: "editing".
+- No passage field is required (but you may include a short 1–3 sentence context if needed).
+- Focus on:
+  - Grammar: subject-verb agreement, pronoun agreement, verb tense consistency.
+  - Punctuation: commas in compound or complex sentences, commas with introductory phrases, apostrophes, and end punctuation.
+  - Sentence structure: run-ons, fragments, awkward phrasing, misplaced or dangling modifiers.
+  - Clarity and concision: choosing the best word or phrase, removing redundancy.
+  - Transitions and logical connections between ideas.
+- Typical formats:
+  - “Which revision of the underlined portion is best?”
+  - “Which sentence best combines these two sentences?”
+  - “Which choice correctly completes the sentence?”
+  - “Which choice makes the paragraph clearer or more formal?”
+
+Answer choices and correctness:
+- Each question must have EXACTLY 4 answer choices: A, B, C, D.
+- Exactly ONE choice is correct for each question.
+- correctIndex must be an integer 0–3 corresponding to the correct choice in the choices array.
+- Wrong answer choices should be plausible:
+  - READING: reflect common misreadings, partial understanding, or misinterpretation of the passage.
+  - EDITING: reflect common grammar mistakes or almost-correct but slightly off phrasing.
+- Do NOT include explanations or reasoning. Do NOT say which letter is correct in the text; only use correctIndex.
 
 JSON format requirements:
-- You may reuse the SAME passage text for multiple reading questions; to make it simple, include the passage text in a \`passage\` field on EACH reading question that needs it.
-- Each question must have EXACTLY 4 answer choices (A, B, C, D).
-- Exactly ONE choice is correct.
+- You may reuse the SAME passage text for multiple READING questions; to keep it simple, include the passage text in a passage field on EACH reading question that needs it.
 - For READING questions:
-  - Use topic: "reading"
-  - Include a \`passage\` string field with the passage text.
+  - Use topic: "reading".
+  - Include a passage string field with the passage text.
 - For EDITING questions:
-  - Use topic: "editing"
-  - They can be self-contained (no \`passage\` field needed), or include a short context sentence if needed.
+  - Use topic: "editing".
+  - They can be self-contained (no passage field needed) or include a very short context if helpful.
+- If topic === "mixed", the "topic" field on each question must correctly reflect that question's type: "reading" or "editing". Do NOT use "mixed" per-question.
 
 Return ONLY valid JSON with this shape:
 
@@ -139,6 +188,12 @@ Return ONLY valid JSON with this shape:
     }
   ]
 }
+
+Rules for JSON:
+- Double quotes around all keys and string values.
+- No trailing commas.
+- The "difficulty" field for each question must match one of: "easy", "medium", "hard".
+- The "topic" field should correctly describe the question type as used above.
 
 There should be exactly ${count} questions.
 `;
