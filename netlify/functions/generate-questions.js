@@ -10,10 +10,11 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body || "{}");
-    const subject = body.subject || "math"; // "math" or "ela"
+    const subject = body.subject || "math";
     const topic = body.topic || "mixed";
     const difficulty = body.difficulty || "medium";
     const count = Math.max(1, Math.min(10, Number(body.count) || 5));
+    const recentPrompts = Array.isArray(body.recentPrompts) ? body.recentPrompts.slice(0, 20) : [];
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
@@ -197,6 +198,10 @@ Rules for JSON:
 
 There should be exactly ${count} questions.
 `;
+    }
+
+    if (recentPrompts.length > 0) {
+      userPrompt += `\nDo NOT repeat or closely paraphrase any of these recently seen questions:\n${recentPrompts.map((p, i) => `${i + 1}. ${p}`).join("\n")}\n`;
     }
 
     // Call Anthropic Messages API
