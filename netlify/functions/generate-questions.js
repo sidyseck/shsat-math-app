@@ -310,7 +310,7 @@ YOUR RESPONSE MUST BE ONLY RAW JSON — no prose, no markdown, no explanation ou
 
 {
   "correctIndex": 0,
-  "solution": "step-by-step explanation here"
+  "solution": "concise step-by-step explanation (3-5 lines max)"
 }
 
 Rules:
@@ -328,7 +328,7 @@ Rules:
         },
         body: JSON.stringify({
           model: "claude-sonnet-4-6",
-          max_tokens: 1024,
+          max_tokens: 2048,
           system: "You are a careful SHSAT math solver. Always return valid JSON.",
           messages: [{ role: "user", content: solverPrompt }],
           temperature: 0.1,
