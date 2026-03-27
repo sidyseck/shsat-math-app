@@ -270,17 +270,11 @@ Always return valid JSON only — no markdown, no commentary outside the JSON.`,
     }
 let questions = questionsPayload.questions;
 
-// If math: run a solver pass to find the correct answer for each question
+// If math: run a solver pass to find the correct answer for each question (all in parallel)
 if (subject === "math") {
-  const solvedQuestions = [];
+  const validQuestions = questions.filter(q => q && Array.isArray(q.choices) && q.choices.length === 4);
 
-  for (let idx = 0; idx < questions.length; idx++) {
-    const q = questions[idx];
-    if (!q || !Array.isArray(q.choices) || q.choices.length !== 4) {
-      console.error("Skipping invalid question structure:", q);
-      continue;
-    }
-
+  const solveOne = async (q) => {
     const solverPrompt = `Solve this SHSAT math question and identify the correct answer choice.
 
 Question:
@@ -304,68 +298,48 @@ Rules:
 - solution: concise step-by-step explanation inside the JSON string
 - Do NOT write anything before or after the JSON object`;
 
-    const solverResponse = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 1024,
-        system: "You are a careful SHSAT math solver. Always return valid JSON.",
-        messages: [
-          { role: "user", content: solverPrompt },
-        ],
-        temperature: 0.1,
-      }),
-    });
-
-    if (!solverResponse.ok) {
-      const solverErr = await solverResponse.text();
-      console.error("Solver API error:", solverErr);
-      continue; // skip this question if solver fails
-    }
-
-    const solverData = await solverResponse.json();
-    const solverContent = solverData.content?.[0]?.text;
-
-    if (!solverContent) {
-      console.error("No content from solver for question:", q);
-      continue;
-    }
-
-    let solverResult;
     try {
+      const solverResponse = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-6",
+          max_tokens: 1024,
+          system: "You are a careful SHSAT math solver. Always return valid JSON.",
+          messages: [{ role: "user", content: solverPrompt }],
+          temperature: 0.1,
+        }),
+      });
+
+      if (!solverResponse.ok) {
+        console.error("Solver API error:", await solverResponse.text());
+        return null;
+      }
+
+      const solverData = await solverResponse.json();
+      const solverContent = solverData.content?.[0]?.text;
+      if (!solverContent) return null;
+
       const solverCleaned = solverContent.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
-      // Fallback: extract first {...} block if the model added surrounding text
       const jsonMatch = solverCleaned.match(/\{[\s\S]*\}/);
-      solverResult = JSON.parse(jsonMatch ? jsonMatch[0] : solverCleaned);
+      const solverResult = JSON.parse(jsonMatch ? jsonMatch[0] : solverCleaned);
+
+      const ci = solverResult.correctIndex;
+      if (!Number.isInteger(ci) || ci < 0 || ci >= q.choices.length) return null;
+
+      return { ...q, correctIndex: ci, correctAnswer: q.choices[ci], solution: solverResult.solution || "" };
     } catch (e) {
-      console.error("Failed to parse solver JSON:", solverContent);
-      continue;
+      console.error("Solver failed for question:", q.prompt, e);
+      return null;
     }
+  };
 
-    const ci = solverResult.correctIndex;
-    if (
-      !Number.isInteger(ci) ||
-      ci < 0 ||
-      ci >= q.choices.length
-    ) {
-      console.error("Solver returned invalid correctIndex:", solverResult);
-      continue;
-    }
-
-    // Attach solver result to the question
-    q.correctIndex = ci;
-    q.correctAnswer = q.choices[ci];
-    q.solution = solverResult.solution || "";
-
-    solvedQuestions.push(q);
-  }
-
-  questions = solvedQuestions;
+  const results = await Promise.all(validQuestions.map(solveOne));
+  questions = results.filter(Boolean);
 } else {
   // Non-math (ELA) branch: you can keep your existing sanity checks here if you like
   questions = questions.filter(q => q && Array.isArray(q.choices) && q.choices.length === 4);
