@@ -1,5 +1,24 @@
 // netlify/functions/generate-questions.js
 
+const questionBank = require("../../shsat_question_bank.json");
+
+// Pick n random examples from the bank matching section + optional subsection
+function pickExamples(section, subsection, n) {
+  const pool = questionBank.questions.filter(q =>
+    q.section === section &&
+    (!subsection || q.subsection === subsection) &&
+    q.choices && q.choices.length === 4
+  );
+  const shuffled = pool.sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, n);
+}
+
+// Format a bank question into a readable few-shot example string
+function formatExample(q) {
+  const choices = q.choices.map(c => c.replace(/^[A-H]\.\s*/, "").trim());
+  return `Question: ${q.question}\nChoices: ${choices.map((c, i) => `${["A","B","C","D"][i]}) ${c}`).join(" | ")}\nCorrect answer: ${q.answer}`;
+}
+
 // Extracts the first balanced {...} block from a string, ignoring braces inside strings
 function extractJson(text) {
   let depth = 0, start = -1, inString = false, escape = false;
@@ -113,6 +132,10 @@ Return ONLY valid JSON with this exact shape:
 }
 
 There should be exactly ${count} questions.
+
+Here are real SHSAT math questions from the official NYC DOE sample test. Match their style, complexity, and phrasing exactly:
+
+${pickExamples("math", "multiple_choice", 3).map(formatExample).join("\n\n")}
 `;
 
     }else {
@@ -198,6 +221,11 @@ Rules:
 - Exactly ${count} questions total (${readingCount} reading, then ${editingCount} editing).
 - Each question: exactly 4 choices, correctIndex 0–3, topic is "reading" or "editing".
 - No trailing commas. Double quotes on all keys and string values.
+
+Here are real SHSAT ELA questions from the official NYC DOE sample test. Match their style exactly:
+
+${editingCount > 0 ? `REVISING & EDITING examples:\n${pickExamples("ela", "revising_editing", 2).map(formatExample).join("\n\n")}` : ""}
+${readingCount > 0 ? `READING COMPREHENSION examples:\n${pickExamples("ela", "reading_comprehension", 2).map(formatExample).join("\n\n")}` : ""}
 `;
     }
 

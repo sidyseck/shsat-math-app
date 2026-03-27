@@ -1,0 +1,1526 @@
+{
+  "metadata": {
+    "source": "NYC 2024 SHSAT Sample Test Form A (For 2025 Admissions)",
+    "total_questions": 114,
+    "ela_questions": 57,
+    "math_questions": 57,
+    "grade": 8
+  },
+  "questions": [
+    {
+      "number": 1,
+      "section": "ela",
+      "subsection": "revising_editing",
+      "question": "Read this sentence: \"The engineers tried some other things in the hope of finding a more effective insulation for the compartment.\" What is the most precise revision for the words \"The engineers tried some other things\"?",
+      "choices": [
+        "A. The engineers did experiments with several new materials",
+        "B. The engineers tested foam and fiberglass",
+        "C. The engineers examined two new materials",
+        "D. The engineers worked with foam and fiberglass"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 2,
+      "section": "ela",
+      "subsection": "revising_editing",
+      "question": "Which sentence contains an error in its construction and should be revised? (1) Walking dogs, cleaning kennels, hand-feeding newborn kittens, and supporting the pet-adoption process, the animal shelter is looking for volunteers to help with a variety of tasks. (2) Working at the animal shelter is a great way for young people, especially those who aspire to care for and protect animals, to gain valuable work experience. (3) In addition to hands-on training with animal care, volunteers will learn important job skills, such as punctuality, responsibility, and personal initiative. (4) Caring for animals can also help volunteers develop empathy, which is the awareness and understanding of the feelings of others.",
+      "choices": [
+        "E. sentence 1",
+        "F. sentence 2",
+        "G. sentence 3",
+        "H. sentence 4"
+      ],
+      "answer": "E"
+    },
+    {
+      "number": 3,
+      "section": "ela",
+      "subsection": "revising_editing",
+      "question": "Which edit should be made to correct the sentence? \"The Colosseum in Rome, Italy which is considered one of the 'new' Seven Wonders of the World, is the largest amphitheater ever built and once could hold up to 50,000 spectators.\"",
+      "choices": [
+        "A. Delete the comma after Rome.",
+        "B. Insert a comma after Italy.",
+        "C. Delete the comma after World.",
+        "D. Insert a comma after built."
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 4,
+      "section": "ela",
+      "subsection": "revising_editing",
+      "question": "Which pair of revisions need to be made in this paragraph? (1) Both Italian gelato and American ice cream are delightful treats to have on a hot summer day, but many people wonder: what is the difference between the two? (2) To start with, the butterfat content is much higher in ice cream than it is in gelato, making the Italian treat a wiser decision for people looking to make healthier choices. (3) Additionally, the mixing process, which adds less air to the frozen treat, makes gelato denser than ice cream. (4) Finally, gelato is served 10 to 15 degrees warmer than ice cream, which enhances the texture and flavor of the gelato, and allow it to melt more quickly.",
+      "choices": [
+        "E. Sentence 1: Delete the colon after wonder AND change is to are.",
+        "F. Sentence 2: Delete the comma after with AND change it is to they are.",
+        "G. Sentence 3: Delete the comma after process AND change makes to make.",
+        "H. Sentence 4: Delete the comma after gelato AND change allow to allows."
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 5,
+      "section": "ela",
+      "subsection": "revising_editing",
+      "passage": "The Free College Debate",
+      "question": "Which sentence should replace sentence 3 to best state the topic of the passage?",
+      "choices": [
+        "A. Several states have implemented scholarship programs that allow students to attend public universities and community colleges at a very low tuition rate or for free.",
+        "B. Determining the most effective way to make college affordable is a complex issue, and there are differing opinions about how to approach the problem.",
+        "C. Higher-education institutions should reduce the cost of a college education by finding ways to help students avoid paying for unnecessary classes and materials.",
+        "D. The main concern related to the issue of college affordability is that helping students cover tuition could affect the quality of the education they receive."
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 6,
+      "section": "ela",
+      "subsection": "revising_editing",
+      "passage": "The Free College Debate",
+      "question": "Read this sentence: \"Some note that several states have made their community or state colleges low-cost or free for students with limited resources.\" Where should the sentence be added to best support the ideas in the second paragraph (sentences 4–7)?",
+      "choices": [
+        "E. at the beginning of the paragraph (before sentence 4)",
+        "F. between sentences 4 and 5",
+        "G. between sentences 5 and 6",
+        "H. between sentences 6 and 7"
+      ],
+      "answer": "F"
+    },
+    {
+      "number": 7,
+      "section": "ela",
+      "subsection": "revising_editing",
+      "passage": "The Free College Debate",
+      "question": "Which sentence presents information that shifts away from the topic of the third paragraph (sentences 8–13) and should be deleted?",
+      "choices": [
+        "A. sentence 10",
+        "B. sentence 11",
+        "C. sentence 12",
+        "D. sentence 13"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 8,
+      "section": "ela",
+      "subsection": "revising_editing",
+      "passage": "The Free College Debate",
+      "question": "Which phrase should be added before sentence 14 to best transition to the ideas in the fourth paragraph (sentences 14–17)?",
+      "choices": [
+        "E. Because college affordability is a complicated issue,",
+        "F. With so many opinions about how to make college affordable,",
+        "G. Until college becomes more affordable,",
+        "H. Although some college affordability programs have been successful,"
+      ],
+      "answer": "G"
+    },
+    {
+      "number": 9,
+      "section": "ela",
+      "subsection": "revising_editing",
+      "passage": "The Free College Debate",
+      "question": "Which concluding sentence should be added after sentence 19 to support the topic of the passage?",
+      "choices": [
+        "A. The increasing use of technology in college classrooms and the financial support from tuition scholarship programs will make colleges more affordable for many students.",
+        "B. Statewide tuition scholarship programs will make college more affordable for many students, but these programs may lead to new problems.",
+        "C. Until the problems associated with the rising cost of college are solved, many students will pursue other options after graduating high school.",
+        "D. When the issue of college affordability is resolved, students will be able to make decisions about pursuing higher education without cost being the deciding factor."
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 10,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Impressions of an Indian Childhood by Zitkala-Sa",
+      "question": "In paragraph 1, the phrases \"cool morning breezes swept freely\" and \"wafting the perfume of sweet grasses\" affect the tone of the excerpt by suggesting",
+      "choices": [
+        "E. the sadness that the author feels reflecting upon her former way of life.",
+        "F. the enthusiasm with which the author approached her work indoors.",
+        "G. the fond feelings that the author has toward her childhood experiences.",
+        "H. the mix of emotions that the author feels toward her work and her mother."
+      ],
+      "answer": "G"
+    },
+    {
+      "number": 11,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Impressions of an Indian Childhood by Zitkala-Sa",
+      "question": "The author's use of sequence in paragraphs 1 and 2 contributes to the development of ideas in the excerpt by",
+      "choices": [
+        "A. listing the many steps that are involved in the process of beading in order to explain its difficulty and complexity.",
+        "B. conveying the importance of following the steps of the beading process in a precise order to work most efficiently.",
+        "C. emphasizing the time required to fully prepare for and execute the many large and small tasks in the activity of beading.",
+        "D. detailing each step in preparation for beading in order to highlight the author's enthusiasm for the work."
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 12,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Impressions of an Indian Childhood by Zitkala-Sa",
+      "question": "The phrase \"just as an artist arranges the paints upon his palette\" in paragraph 2 suggests that",
+      "choices": [
+        "E. beadwork is a true form of art.",
+        "F. color is a source of artistic inspiration.",
+        "G. all artistic activities begin with a series of steps.",
+        "H. the beadworker tries to imitate art."
+      ],
+      "answer": "E"
+    },
+    {
+      "number": 13,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Impressions of an Indian Childhood by Zitkala-Sa",
+      "question": "The details in paragraph 3 convey a central idea of the excerpt by suggesting that",
+      "choices": [
+        "A. the author was interested in the work because she knew her mother was making something for her.",
+        "B. the author had difficulty learning through observation but wanted to help her mother.",
+        "C. the author was determined to behave according to her mother's standards and sought her approval.",
+        "D. the author had great admiration for her mother's precision and mastery of her craft."
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 14,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Impressions of an Indian Childhood by Zitkala-Sa",
+      "question": "How does the author distinguish her point of view from that of her mother?",
+      "choices": [
+        "E. by describing their techniques for knotting sinew thread (paragraph 4)",
+        "F. by describing their approaches to beadwork design (paragraph 5)",
+        "G. by stating her mother's instructions on working with quills (paragraph 6)",
+        "H. by stating her mother's ideas about activities after lessons (paragraph 7)"
+      ],
+      "answer": "F"
+    },
+    {
+      "number": 15,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Impressions of an Indian Childhood by Zitkala-Sa",
+      "question": "Read this sentence from paragraph 7: \"Always after these confining lessons I was wild with surplus spirits, and found joyous relief in running loose in the open again.\" Which sentence best describes how this sentence fits into the overall structure of the excerpt?",
+      "choices": [
+        "A. It introduces a shift from the author's demanding relationship with her mother to her more relaxed relationships with friends.",
+        "B. It signals a change from the challenging aspects of life on the reservation to the advantages of living on the prairie.",
+        "C. It highlights a contrast between the focus and control required while working and the freedom of having fun outside.",
+        "D. It concludes the progression of events in the narrative by describing the sequence of events at the end of the author's day."
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 16,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Impressions of an Indian Childhood by Zitkala-Sa",
+      "question": "Which sentence best summarizes the process of beading that is described in the excerpt?",
+      "choices": [
+        "E. Take a buckskin bag full of beads and spread them out on a mat in different colors like a paint palette; take a double sheet of buckskin and smooth it out on a table; take a sinew and awl and thread the beads onto the buckskin in a desired pattern.",
+        "F. Cut the double sheet of buckskin into a shape; take a skein of sinew and pierce the buckskin with an awl; thread the sinew with beads of many different colors in a simple or complex pattern; twist the sinew to keep it tight after every stitch into the buckskin.",
+        "G. Arrange the beads into groups of colors on a mat; smooth out a double sheet of buckskin and cut it to shape; take a single thread of sinew; pierce the buckskin with an awl; thread the buckskin with the sinew and string it with beads, carefully twisting after every stitch.",
+        "H. Gather beads, buckskin, sinew, and awl and place them on a mat; cut the buckskin into the desired shape; decide on a pattern for the beads and create it using the sinews and the awl; thread the beads onto the sinew in the desired pattern and twist it tight."
+      ],
+      "answer": "G"
+    },
+    {
+      "number": 17,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Impressions of an Indian Childhood by Zitkala-Sa",
+      "question": "The idea that mastering moccasin design and creation requires experience is best illustrated in the excerpt through",
+      "choices": [
+        "A. the information about the advanced technique of incorporating porcupine quills into a design.",
+        "B. the descriptions of the special materials that must be used to make decorated moccasins.",
+        "C. the descriptions of the various color combinations that make an attractive moccasin design.",
+        "D. the example of the author successfully and independently using a sharpened rod."
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 18,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Impressions of an Indian Childhood by Zitkala-Sa",
+      "question": "The table after paragraph 7 expands on a central idea in the excerpt because it shows that",
+      "choices": [
+        "E. the craft the author was learning was a tradition that endured through many generations and changes.",
+        "F. the author's family incorporated traditional materials into their craft as a way of resisting the influence from European traders.",
+        "G. the uniqueness of the cultural tradition that the author learned as a child was eventually recognized in Europe.",
+        "H. the author was able to incorporate color into her craftwork as a result of trade with other peoples."
+      ],
+      "answer": "E"
+    },
+    {
+      "number": 19,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "At Dusk by Natasha Trethewey",
+      "question": "Which lines from the poem best support the idea that the neighbor's efforts to call the cat home directly affect the speaker?",
+      "choices": [
+        "A. \"At first I think she is calling a child, / my neighbor\" (lines 1–2)",
+        "B. \"the high-pitched wheedling we send out / to animals who know only sound\" (lines 5–6)",
+        "C. \"I listen as my neighbor's voice trails off. / She's given up calling for now\" (lines 20–21)",
+        "D. \"left me to wonder that I too might lift / my voice, sure of someone out there\" (lines 25–26)"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 20,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "At Dusk by Natasha Trethewey",
+      "question": "The isolation of the words \"—here here—\" in line 7 contributes to the meaning of the poem mainly by",
+      "choices": [
+        "E. demonstrating how people try to communicate in familiar ways but are still sometimes misunderstood.",
+        "F. showing how people can feel desperate to connect with others but give up quickly when their first attempts are ignored.",
+        "G. using the unspoken bond between the neighbor and her cat to highlight the understanding people have with their pets.",
+        "H. illustrating the use of a simple expression to call home those who are loved and missed."
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 21,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "At Dusk by Natasha Trethewey",
+      "question": "The details in lines 10–17 about the cat convey a central idea of the poem by",
+      "choices": [
+        "A. showing that returning home after experiencing independence is challenging.",
+        "B. suggesting that caring for others means allowing them to grow and to roam freely.",
+        "C. implying that expecting to feel at home in the natural world leads to disappointment.",
+        "D. emphasizing the conflicting desires to return to the familiar and to explore the unknown."
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 22,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "At Dusk by Natasha Trethewey",
+      "question": "The phrases \"luminous possibility\" and \"all that would keep her / away from home\" (lines 17–19) affect the poem by",
+      "choices": [
+        "E. highlighting the cat's lack of concern for the neighbor.",
+        "F. implying that the speaker finds the cat's current situation interesting.",
+        "G. suggesting that the cat is compelled by its sense of wonder to remain outdoors.",
+        "H. indicating that the speaker supports the cat's decision to ignore the neighbor."
+      ],
+      "answer": "G"
+    },
+    {
+      "number": 23,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "At Dusk by Natasha Trethewey",
+      "question": "Read lines 11–13 from the poem: 'toward the voice, then back / to the constellation of fireflies flickering / near her head.' Which idea from the poem does the imagery in these lines help convey?",
+      "choices": [
+        "A. The cat lacks a preference for going in or staying out.",
+        "B. The cat is eager to see what will happen next.",
+        "C. The cat wants to understand the unpredictable behavior of the fireflies.",
+        "D. The cat is fascinated by the natural world and finds the indoors unremarkable."
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 24,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "At Dusk by Natasha Trethewey",
+      "question": "How does the setting affect the events of the poem?",
+      "choices": [
+        "E. It enables the speaker to regularly overhear the neighbor calling for her cat at dusk.",
+        "F. It allows the speaker to observe the neighbor quietly without interacting with her.",
+        "G. It shows how living in close proximity helps the speaker feel connected to the neighbor.",
+        "H. It shows how feeling isolated causes the speaker to imagine interactions with the neighbor."
+      ],
+      "answer": "F"
+    },
+    {
+      "number": 25,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "At Dusk by Natasha Trethewey",
+      "question": "The poet develops a theme about making connections with others mainly through the",
+      "choices": [
+        "A. exploration of the desires of the speaker and the neighbor.",
+        "B. speaker's observations of the sights and sounds in the neighborhood.",
+        "C. speculations the speaker makes about what the neighbor does inside her house.",
+        "D. speaker's explanation of the cat's thoughts and actions."
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 26,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Champion of the Channel (Gertrude Ederle)",
+      "question": "What do the newspaper editor's comments in paragraph 1 reveal about the challenges Ederle faced in attempting her feat?",
+      "choices": [
+        "E. Regardless of her ability, being an American put Ederle at a serious disadvantage over a Londoner, who would be more familiar with the English Channel.",
+        "F. At the time, Ederle still needed more training in order to succeed in the daunting task of swimming the English Channel.",
+        "G. While Ederle could participate in athletic competition, some people were not comfortable with her attempt to swim the channel because no woman had ever attempted it before.",
+        "H. In spite of her previous achievements, Ederle still experienced social as well as physical obstacles in attempting to swim the channel."
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 27,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Champion of the Channel (Gertrude Ederle)",
+      "question": "The word \"insurmountable\" is used in paragraph 4 to highlight",
+      "choices": [
+        "A. how the bathing suit made it impossible for Ederle to make it across the channel.",
+        "B. how Ederle and her sister decided to improve Ederle's swimming equipment in a creative way.",
+        "C. that the flaws in Ederle's bathing suit made a difficult task even more complicated.",
+        "D. that the swimming equipment Ederle used needed to be custom made for her attempt."
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 28,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Champion of the Channel (Gertrude Ederle)",
+      "question": "Which statement describes how the author's use of a problem-and-solution structure in paragraph 5 contributes to the development of ideas in the passage?",
+      "choices": [
+        "E. Detailing the challenges presented by the cold channel waters highlights the effectiveness of Ederle's training.",
+        "F. Describing Ederle's physical difficulties during her swim provides evidence of the team effort required to ensure her safety.",
+        "G. Explaining the difficulties that arose early in the effort helps predict the additional obstacles that occurred during Ederle's attempt.",
+        "H. Illustrating Ederle's process of blocking out her discomfort shows that swimming the channel was both a mental and a physical challenge."
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 29,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Champion of the Channel (Gertrude Ederle)",
+      "question": "Which sentence best supports the idea that Ederle succeeded in swimming across the channel because of her innovative approach to the challenge?",
+      "choices": [
+        "A. \"Yet, at only nineteen years old, Ederle not only became the first woman to accomplish this feat, she also broke the men's record by two hours.\" (paragraph 1)",
+        "B. \"At first she shivered in the bone-chilling water even though she had covered her body in eight layers of grease for insulation.\" (paragraph 5)",
+        "C. \"Using a new overhand stroke called the American crawl, Ederle eventually settled into a steady pace, briskly breaking through waves.\" (paragraph 5)",
+        "D. \"The other [tugboat], displaying a sign that read 'This way, ole kid!' with an arrow pointing forward, transported her coach, family, and friends.\" (paragraph 6)"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 30,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Champion of the Channel (Gertrude Ederle)",
+      "question": "Paragraph 7 contributes to the development of a central idea of the passage by",
+      "choices": [
+        "E. illustrating that Ederle's physical strength and mental fortitude allowed her to stay focused on her goal.",
+        "F. conveying that Ederle pushed herself to the edge of her physical capabilities in order to complete the swim.",
+        "G. highlighting the impact the severe weather had on Ederle's emotions during her swim.",
+        "H. emphasizing the surge of emotions Ederle felt as she came closer to achieving a personal goal."
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 31,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Champion of the Channel (Gertrude Ederle)",
+      "question": "Which sentence from the passage best conveys the author's perspective regarding the impact of Ederle's accomplishment?",
+      "choices": [
+        "A. \"Undeterred, Ederle decided to try again.\" (paragraph 3)",
+        "B. \"For hours Ederle swam, dodging debris with an amused smile.\" (paragraph 7)",
+        "C. \"Yet Ederle felt indescribably happy as she churned through the sea.\" (paragraph 7)",
+        "D. \"Ederle had swum into history.\" (paragraph 8)"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 32,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Champion of the Channel (Gertrude Ederle)",
+      "question": "Which sentence is the best summary of the steps that Ederle took to prepare for her second attempt to swim across the English Channel?",
+      "choices": [
+        "E. Working with her sister, Ederle waterproofed her goggles using melted candle wax to seal the edges and designed a two-piece silk swimsuit that was lightweight and would not stretch out during the long swim.",
+        "F. Ederle covered her body in numerous layers of grease for insulation and focused on finding her 'sphere' during her swim.",
+        "G. Ederle began training with her coach, who played music while she swam to help her time her strokes to the music.",
+        "H. Ederle focused on developing better equipment than the standard bathing suit that proved cumbersome during her first attempt to cross the channel."
+      ],
+      "answer": "E"
+    },
+    {
+      "number": 33,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Champion of the Channel (Gertrude Ederle)",
+      "question": "The idea that many people were interested in Ederle's attempt to swim the channel is illustrated in the passage mainly through the",
+      "choices": [
+        "A. information about Ederle's competition with another female swimmer who was also attempting to cross the channel.",
+        "B. details about the reports of Ederle's progress during the swim and the celebration of her successful completion of the swim.",
+        "C. details about how Ederle's historic swim contributed to an increase in the number of people learning how to swim.",
+        "D. information about the resources Ederle used throughout her swim to maintain her motivation and stamina."
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 34,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Champion of the Channel (Gertrude Ederle)",
+      "question": "The table builds on the information in the passage mainly by",
+      "choices": [
+        "E. emphasizing that people have continued to swim across the channel and have significantly improved the speed record.",
+        "F. suggesting that Ederle inspired many women to swim across the channel to attempt to break the current speed record.",
+        "G. revealing that other women competed with Ederle to set a record time for swimming across the English Channel.",
+        "H. providing a comparison between the earliest channel-swimming records and the current record times."
+      ],
+      "answer": "E"
+    },
+    {
+      "number": 35,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "5 Reasons Physical Books Might Be Better Than E-Books by Shaunacy Ferro",
+      "question": "The details in paragraph 1 convey a central idea of the passage by noting that",
+      "choices": [
+        "A. fewer people are buying e-books than printed books.",
+        "B. printed books have some advantages over e-books.",
+        "C. printed books rely on natural materials more than e-books.",
+        "D. some people recommend buying printed books over e-books."
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 36,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "5 Reasons Physical Books Might Be Better Than E-Books by Shaunacy Ferro",
+      "question": "Which evidence from the passage best supports the claim that \"print definitely isn't dead\" (paragraph 1)?",
+      "choices": [
+        "E. Most college students prefer using paper books to using e-books.",
+        "F. Scientists are still studying the effects of reading on a screen.",
+        "G. Paper books are less disruptive to sleep patterns than e-books are.",
+        "H. Reading on a screen can affect both the eyes and the brain."
+      ],
+      "answer": "E"
+    },
+    {
+      "number": 37,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "5 Reasons Physical Books Might Be Better Than E-Books by Shaunacy Ferro",
+      "question": "Which sentence from the passage suggests that people in the future will likely choose e-books over print books?",
+      "choices": [
+        "A. 'They discovered that the kids sometimes skipped text in favor of interactive features in the e-books, suggesting that certain multimedia in children's e-books can be detrimental to the practice of reading itself.' (paragraph 2)",
+        "B. 'However, the researchers noted that some interactive features in e-books are designed to enhance comprehension, and that those might be more helpful than game-type interactive graphics.' (paragraph 2)",
+        "C. 'Kids who read enhanced e-books—ones with interactive, multimedia experiences—were more engaged with them physically, but in the end they remembered fewer narrative details than those who read print books or basic e-books.' (paragraph 3)",
+        "D. 'However, a 2012 study from the UK's National Literacy Trust of kids ages 8 to 16 found that more than 50 percent of children reported preferring screen reading.' (paragraph 5)"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 38,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "5 Reasons Physical Books Might Be Better Than E-Books by Shaunacy Ferro",
+      "question": "How does paragraph 7 fit into the overall structure of the passage?",
+      "choices": [
+        "E. It indicates where the author changes the purpose of the writing.",
+        "F. It introduces the author's opinion on the issue.",
+        "G. It signals a shift in the position of the author.",
+        "H. It begins the author's commentary on the preceding information."
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 39,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "5 Reasons Physical Books Might Be Better Than E-Books by Shaunacy Ferro",
+      "question": "Which sentence from the passage best reveals the author's point of view about e-books?",
+      "choices": [
+        "A. 'While scientists are still trying to tease out exactly how digital reading affects us differently, here are five ways e-books might be inferior to their dead-tree cousins.' (paragraph 1)",
+        "B. 'While e-book textbooks are often cheaper (and easier to carry) than traditional door-stop textbooks, college students often don't prefer them.' (paragraph 5)",
+        "C. 'For instance, reading an e-book on a computer is a much different experience than reading on a Kindle, which is specifically designed for consuming books.' (paragraph 8)",
+        "D. 'So, too, is playing with an interactive e-book on an iPad, compared to using a simpler e-book device that only presents the text, with no opportunities to click away into digital distractions.' (paragraph 8)"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 40,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "5 Reasons Physical Books Might Be Better Than E-Books by Shaunacy Ferro",
+      "question": "The studies described in paragraph 6 are important to the author's observations in paragraphs 7 and 8 because the findings",
+      "choices": [
+        "E. show that the author has personal opinions to share beyond the ideas included in the studies.",
+        "F. give the author the opportunity to reach practical conclusions about reading that are based on scientific evidence.",
+        "G. highlight the author's statement that digital reading experiences vary based on the individual and the device.",
+        "H. support the author's inference that more studies on more types of devices are needed."
+      ],
+      "answer": "F"
+    },
+    {
+      "number": 41,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "5 Reasons Physical Books Might Be Better Than E-Books by Shaunacy Ferro",
+      "question": "Which evidence in the passage is most relevant to the author's claim that 'our expectations of e-book reading . . . might affect how we approach the text' (paragraph 9)?",
+      "choices": [
+        "A. Studies found that students used their study time less productively with e-books than with print books.",
+        "B. A study found that e-books enhanced with multimedia engaged children to interact physically with the e-books.",
+        "C. Adult readers recalled more details from a story read in a print book than in an e-book.",
+        "D. One study found that people who read e-books had poor recall of chronological events."
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 42,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "5 Reasons Physical Books Might Be Better Than E-Books by Shaunacy Ferro",
+      "question": "What is the best summary of the research into the effects of e-book reading?",
+      "choices": [
+        "E. E-books are disliked by college students and preferred by kids, and their interactive features are distracting.",
+        "F. Some e-books can aid comprehension, but most e-book readers remember few details.",
+        "G. E-books reduce reading comprehension and increase distraction, and they are tiring for the eyes and brain.",
+        "H. Enhanced e-books engage children, but they offer them too many opportunities to be distracted by non-reading activities."
+      ],
+      "answer": "G"
+    },
+    {
+      "number": 43,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Excerpt from The Highest Tide by Jim Lynch",
+      "question": "In paragraph 3, the phrase \"the butterflies of the sea\" conveys the idea that",
+      "choices": [
+        "A. nudibranchs do not have to work as hard as other animals to survive in the ocean.",
+        "B. nudibranchs have colorful features that make them stand out.",
+        "C. nudibranchs are delicate and have trouble adapting to their environment.",
+        "D. nudibranchs are rare and difficult to find in the ocean."
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 44,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Excerpt from The Highest Tide by Jim Lynch",
+      "question": "Read these sentences from paragraph 4: 'I'm not sure why I decided to take a look. It was still an hour before sunrise, and I knew exactly what the bars looked like in the moonlight, but for some reason, I couldn't resist.' The sentences contribute to the overall structure of the excerpt by",
+      "choices": [
+        "E. introducing the mysterious creature that the narrator discovers.",
+        "F. indicating a shift from the narrator recalling the past to the narrator reflecting on the present.",
+        "G. establishing a struggle with fear that the narrator must overcome.",
+        "H. building tension through indicating that the narrator is going to see something unexpected."
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 45,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Excerpt from The Highest Tide by Jim Lynch",
+      "question": "The narrator's actions in paragraph 5 reveal that he is",
+      "choices": [
+        "A. expecting to see the familiar sight of a stranded minke.",
+        "B. confident about exploring farther into the mudflats.",
+        "C. unconcerned about becoming stuck in the mudflats.",
+        "D. determined to discover the source of the sound."
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 46,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Excerpt from The Highest Tide by Jim Lynch",
+      "question": "How does the setting affect the plot of the excerpt?",
+      "choices": [
+        "E. The darkness of the mudflats before sunrise causes the narrator to pay close attention to his surroundings.",
+        "F. The rugged terrain of the mudflats makes it more difficult for the narrator to do his job.",
+        "G. The slow return of the tide along the mudflats forces the narrator to be patient during his journey.",
+        "H. The barren appearance of the mudflats creates a sense of mystery that unsettles the narrator."
+      ],
+      "answer": "E"
+    },
+    {
+      "number": 47,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Excerpt from The Highest Tide by Jim Lynch",
+      "question": "Which sentence from paragraph 5 supports the idea that the narrator is taking a risk?",
+      "choices": [
+        "A. 'It was an exhale, a release of sorts, and I instantly wondered if a whale was stranded again.'",
+        "B. 'I looked for a hulking silhouette but couldn't find one.'",
+        "C. 'I waited, but there were no more sounds.'",
+        "D. 'I knew the flats well enough to know I could get stuck just about anywhere.'"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 48,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Excerpt from The Highest Tide by Jim Lynch",
+      "question": "Read this sentence from paragraph 6: 'I kept stepping toward the one sound I'd heard, a growing part of me hoping I'd find nothing at all.' How do the narrator's actions develop a central idea of the excerpt?",
+      "choices": [
+        "E. The narrator's concern about the origin of the noise shows dedication to helping preserve sea life in the mudflats.",
+        "F. The narrator's curiosity about the sea life in the mudflats outweighs any fear about the situation.",
+        "G. The narrator's knowledge about a variety of sea life encourages a search for more specimens to study.",
+        "H. The narrator's eagerness about new specimens of sea life outweighs the reality that the area is an unlikely place to find them."
+      ],
+      "answer": "F"
+    },
+    {
+      "number": 49,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Excerpt from The Highest Tide by Jim Lynch",
+      "question": "Read these sentences from paragraph 8: 'So, I was looking at it and not looking at it while my heart spangled my vision. I saw fragments, pieces, and tried to fuse them in my mind but couldn't be certain of the whole.' The sensory language 'spangled my vision,' 'I saw fragments, pieces,' and 'tried to fuse them in my mind' conveys the narrator's",
+      "choices": [
+        "A. extreme excitement about making a great discovery.",
+        "B. reluctant acceptance that he needs to leave the mudflats.",
+        "C. terrified confusion about the creature in the mudflats.",
+        "D. sudden concern about his personal safety."
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 50,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "Excerpt from The Highest Tide by Jim Lynch",
+      "question": "The author develops the narrator's point of view when the narrator sees the creature by",
+      "choices": [
+        "E. describing the narrator's movements as he approaches the creature.",
+        "F. emphasizing the odds of finding the creature in an area inhabited by a rival species.",
+        "G. showing the narrator's growing realization of the creature's identity.",
+        "H. comparing the size of the creature to the size of a vehicle."
+      ],
+      "answer": "G"
+    },
+    {
+      "number": 51,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "It's Time to Stop Thinking That All Non-Native Species Are Evil by Emma Marris",
+      "question": "Which sentence from the excerpt supports the conclusion that Elton's 'militaristic invasion metaphor' (paragraph 1) has influenced scientific understanding of non-native species?",
+      "choices": [
+        "A. 'Among [Olden's] findings: a substantial number of them said they would immediately eradicate a hypothetical non-native forest plant, even if it were shown to have no effect on the forest.' (paragraph 5)",
+        "B. 'Regardless of what we label them, conservationists will be reluctant to remove them from their new environs—to do so would stymie their chances of adapting to the warmer future we're creating.' (paragraph 8)",
+        "C. 'A project to rip out and poison the spartina—which grows in dense swaths that exclude many other shorebirds—saw clapper rail numbers go tumbling downward.' (paragraph 10)",
+        "D. 'In some cases we can best serve biodiversity by leaving the non-natives alone or even—brace yourself, now—introducing them on purpose.' (paragraph 14)"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 52,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "It's Time to Stop Thinking That All Non-Native Species Are Evil by Emma Marris",
+      "question": "Which detail provides the most relevant support for the claim that 'climate change is making it harder even to decide who the invaders are' (paragraph 7)?",
+      "choices": [
+        "E. the mention in paragraph 8 of non-native species that are forced to seek new habitats",
+        "F. the acknowledgment in paragraph 9 that non-native species include many domestic crops",
+        "G. the description in paragraph 11 of the interactions between native and non-native species",
+        "H. the account in paragraph 13 of an ecologist who changed his beliefs about non-native species"
+      ],
+      "answer": "E"
+    },
+    {
+      "number": 53,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "It's Time to Stop Thinking That All Non-Native Species Are Evil by Emma Marris",
+      "question": "The author's use of cause and effect in paragraphs 10–11 mainly emphasizes the idea that",
+      "choices": [
+        "A. some non-native species have helped their environments while others have had harmful impacts.",
+        "B. attempts to remove non-native species have seldom produced desired results.",
+        "C. some endangered native species have flourished because of the presence of non-native species.",
+        "D. interactions between endangered native species and non-native species must be carefully monitored."
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 54,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "It's Time to Stop Thinking That All Non-Native Species Are Evil by Emma Marris",
+      "question": "Which sentence from the excerpt supports the idea that some species are able to adjust to change?",
+      "choices": [
+        "E. 'Native gardens have become increasingly popular, both as ways to celebrate the unique flora of each region and as tiny hot spots of diversity.' (paragraph 3)",
+        "F. 'Many native (and beautiful) Hawaiian flowers are now pollinated by the Japanese white-eye bird—because the native pollinators have been driven extinct by other non-native species.' (paragraph 11)",
+        "G. 'After all, nativeness is just one environmental value, and arguably not as important as preventing extinctions and preserving biodiversity.' (paragraph 14)",
+        "H. 'The islands lost their own large tortoises, and the fruiting plants that formerly had their seeds moved around by these fruit-loving reptiles have been on the decline.' (paragraph 15)"
+      ],
+      "answer": "F"
+    },
+    {
+      "number": 55,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "It's Time to Stop Thinking That All Non-Native Species Are Evil by Emma Marris",
+      "question": "The details in the section 'A Good Thing, Not the Only Thing' convey a central idea of the excerpt by suggesting that",
+      "choices": [
+        "A. some non-native species can replace native species that are unable to survive on their own.",
+        "B. decisions about whether to keep non-native species should be considered on an individual basis.",
+        "C. the scientists who study rapidly changing ecosystems agree that non-native species enhance biodiversity.",
+        "D. a natural habitat that is healthy should be able to support a blend of native and non-native species."
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 56,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "It's Time to Stop Thinking That All Non-Native Species Are Evil by Emma Marris",
+      "question": "Climate change has affected efforts to manage invasive species mainly by causing ecologists to",
+      "choices": [
+        "E. call upon the public to be more tolerant of the presence of non-native species.",
+        "F. admit that past attempts to eliminate non-native species have damaged the environment.",
+        "G. find ways of ensuring that native species are not harmed by the arrival of new species.",
+        "H. acknowledge that it is not realistic for some species to remain in their native habitats."
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 57,
+      "section": "ela",
+      "subsection": "reading_comprehension",
+      "passage": "It's Time to Stop Thinking That All Non-Native Species Are Evil by Emma Marris",
+      "question": "How does the chart provide additional support for a central idea of the excerpt?",
+      "choices": [
+        "A. by implying that the public becomes aware of non-native species only after removal is impossible",
+        "B. by showing that the complete removal of non-native species is usually not achievable after a certain period of time",
+        "C. by demonstrating why non-native species can be destructive if they are not removed from an area immediately",
+        "D. by explaining how some conservation groups have approached the removal of non-native species"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 58,
+      "section": "math",
+      "subsection": "grid_in",
+      "question": "Simplify: −3.8 + 2.3 − (−1.1)",
+      "choices": [],
+      "answer": "-0.4",
+      "type": "grid_in"
+    },
+    {
+      "number": 59,
+      "section": "math",
+      "subsection": "grid_in",
+      "question": "Angle M and angle R are supplementary. The measure of angle R is 5 times the measure of angle M. What is the measure of angle R, in degrees?",
+      "choices": [],
+      "answer": "150",
+      "type": "grid_in"
+    },
+    {
+      "number": 60,
+      "section": "math",
+      "subsection": "grid_in",
+      "question": "A juice mixture contains 3/16 gallon of apple juice and 3/40 gallon of cranberry juice. How many gallons of apple juice per gallon of cranberry juice does the mixture contain? (Express your answer as a decimal.)",
+      "choices": [],
+      "answer": "2.5",
+      "type": "grid_in"
+    },
+    {
+      "number": 61,
+      "section": "math",
+      "subsection": "grid_in",
+      "question": "Mr. Chan's lawn grows 2 1/8 inches every 2 weeks. He mows his lawn every 2 weeks and cuts off the top 1 3/4 inches of lawn. If Mr. Chan's lawn was 4 inches tall at the beginning of the season, how many inches tall, in decimal form, is Mr. Chan's lawn after 8 weeks?",
+      "choices": [],
+      "answer": "5.5",
+      "type": "grid_in"
+    },
+    {
+      "number": 62,
+      "section": "math",
+      "subsection": "grid_in",
+      "question": "A survey of 110 families shows the number of children: 45 families have 0 children, 32 have 1, 19 have 2, 8 have 3, and 6 have 4. What is the median number of children in these families?",
+      "choices": [],
+      "answer": "1",
+      "type": "grid_in"
+    },
+    {
+      "number": 63,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Mr. Jones has 550 goats, which is 10% more than Mr. King has. How many more goats does Mr. Jones have than Mr. King?",
+      "choices": [
+        "A. 50",
+        "B. 55",
+        "C. 495",
+        "D. 500"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 64,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "If 2y/x − y/2x = □/2x and x ≠ 0, what expression is represented by □?",
+      "choices": [
+        "E. y",
+        "F. 2y",
+        "G. 3y",
+        "H. 4y"
+      ],
+      "answer": "G"
+    },
+    {
+      "number": 65,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "PQRS is a square. Point S is the center of the circle, and points P and R are on the circle. If the area of the square is 4 square centimeters, what is the area, in square centimeters, of the shaded quarter of the circle?",
+      "choices": [
+        "A. π/4",
+        "B. π",
+        "C. 2π",
+        "D. 4π"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 66,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "A list of consecutive integers begins with m and ends with n. If n − m = 66, how many integers are in the list?",
+      "choices": [
+        "E. 2",
+        "F. 33",
+        "G. 66",
+        "H. 67"
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 67,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Simplify: [39(x − 3)/13 + 39] / [39(x − 3)]",
+      "choices": [
+        "A. x",
+        "B. x − 2",
+        "C. 13x − 36",
+        "D. x + 36/13"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 68,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Jar 1 and Jar 2 each contain 1/2 cup of water. If 1/4 of the water in Jar 1 is poured into Jar 2, how much water is now in Jar 2?",
+      "choices": [
+        "E. 1/8 cup",
+        "F. 1/4 cup",
+        "G. 5/8 cup",
+        "H. 3/4 cup"
+      ],
+      "answer": "G"
+    },
+    {
+      "number": 69,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "If n is a whole number, and 0.01 is between 1/n and 1/(n+2), what is the value of n?",
+      "choices": [
+        "A. 0",
+        "B. 1",
+        "C. 2",
+        "D. 99"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 70,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "When asked a certain question in a poll, 72% of the people polled answered yes. If 56 people did not answer yes, what is the total number of people who were polled?",
+      "choices": [
+        "E. 78",
+        "F. 128",
+        "G. 144",
+        "H. 200"
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 71,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "A museum has a room in the shape of a rectangle. The area of the floor is 960 square feet. In a scale drawing, 1 inch = 20 feet. If the length of the room is 2 inches in the scale drawing, what is the width of this room in the scale drawing?",
+      "choices": [
+        "A. 1 1/5 in.",
+        "B. 1 1/4 in.",
+        "C. 24 in.",
+        "D. 40 in."
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 72,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "A computer randomly generates a sequence of whole numbers from 1 to 9, inclusive. If the computer generates a sequence of 300 numbers, what is the best prediction of the number of odd numbers in the sequence?",
+      "choices": [
+        "E. 120",
+        "F. 133",
+        "G. 150",
+        "H. 167"
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 73,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "A truck rental company charges a one-time fee of $40 plus $1 per mile driven. Dalia rented a truck and used a coupon for 20% off the total rental cost. After the coupon was applied, she spent a total of $60. How many miles did she drive?",
+      "choices": [
+        "A. 8",
+        "B. 20",
+        "C. 32",
+        "D. 35"
+      ],
+      "answer": "D"
+    },
+    {
+      "number": 74,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "The probability of drawing a red candy at random from a bag of 25 candies is 2/5. After 5 red candies are removed from the bag, what is the probability of randomly drawing a red candy from the bag?",
+      "choices": [
+        "E. 0",
+        "F. 1/10",
+        "G. 1/5",
+        "H. 1/4"
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 75,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Each number in a sequence is formed by doubling the previous number and then adding 1. If the 9th number in the sequence is 63, what is the 10th number minus the 7th number?",
+      "choices": [
+        "A. 96",
+        "B. 111",
+        "C. 112",
+        "D. 127"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 76,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "At a skating championship, seven judges award scores: 8.9, 8.2, 8.5, 9.0, 8.4, 8.6, 8.8. The highest and lowest scores are discarded, and the mean of the remaining scores is reported. What is the final score?",
+      "choices": [
+        "E. 8.60",
+        "F. 8.62",
+        "G. 8.64",
+        "H. 8.70"
+      ],
+      "answer": "G"
+    },
+    {
+      "number": 77,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "A piece of wood that is 4 1/2 feet long is cut into 2 pieces of different lengths. The shorter piece has a length of x feet. Which inequality expresses all possible values of x?",
+      "choices": [
+        "A. 0 < x < 2 1/4",
+        "B. 0 ≤ x ≤ 2 1/4",
+        "C. 0 < x < 4 1/2",
+        "D. 2 1/4 < x < 4 1/2"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 78,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "What is the area, in square units, of a shaded region shown in a graph where the shaded region appears to be a trapezoid or composite figure with vertices at key grid points?",
+      "choices": [
+        "E. 75",
+        "F. 125",
+        "G. 150",
+        "H. 200"
+      ],
+      "answer": "F"
+    },
+    {
+      "number": 79,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Using the formula F = 9/5 C + 32, yesterday in Centerville the highest Fahrenheit temperature was 86° and the lowest was 68°. What was the difference between these temperatures, in degrees Celsius?",
+      "choices": [
+        "A. 10.0° C",
+        "B. 15.0° C",
+        "C. 20.0° C",
+        "D. 32.4° C"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 80,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Let x be an odd number. In terms of x, what is the sum of the two even numbers closest to x?",
+      "choices": [
+        "E. x",
+        "F. 2x",
+        "G. 2x − 2",
+        "H. 2x − 4"
+      ],
+      "answer": "F"
+    },
+    {
+      "number": 81,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "In 1991, the total public debt of the United States was about $3,600,000,000,000. There were about 250,000,000 people. Which amount is the best estimate of the public debt per person?",
+      "choices": [
+        "A. $1,440",
+        "B. $14,400",
+        "C. $144,000",
+        "D. $14,400,000,000"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 82,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "On a number line, M, N, P, Q are points where N is the midpoint of MQ. MN = x cm and NP = y cm. Which segment has length (2x − y) centimeters?",
+      "choices": [
+        "E. PQ",
+        "F. NP",
+        "G. MQ",
+        "H. MP"
+      ],
+      "answer": "E"
+    },
+    {
+      "number": 83,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "What is the area of a parallelogram with base 30 ft, side 25 ft, and height 20 ft?",
+      "choices": [
+        "A. 750 sq ft",
+        "B. 600 sq ft",
+        "C. 500 sq ft",
+        "D. 300 sq ft"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 84,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "On Wednesday, a baker produced 100 more loaves than on Tuesday. On Thursday, the baker produced 50 fewer loaves than on Tuesday. If the total for all three days was 230, how many loaves were produced on Wednesday?",
+      "choices": [
+        "E. 60",
+        "F. 80",
+        "G. 120",
+        "H. 160"
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 85,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "In Mrs. Arch's class, 9 students scored 60, 7 scored 70, 4 scored 80, 5 scored 90, and 3 scored 100. What is the mean quiz score?",
+      "choices": [
+        "A. 60",
+        "B. 70",
+        "C. 75",
+        "D. 80"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 86,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Which graph represents the solution to the inequality x + 4 ≥ 3?",
+      "choices": [
+        "E. Number line with open circle at −1, arrow pointing left",
+        "F. Number line with closed circle at −1, arrow pointing left",
+        "G. Number line with open circle at −1, arrow pointing right",
+        "H. Number line with closed circle at −1, arrow pointing right (x ≥ −1)"
+      ],
+      "answer": "E"
+    },
+    {
+      "number": 87,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "The reciprocal of 1/4 is added to the reciprocal of 3. What is the reciprocal of this sum?",
+      "choices": [
+        "A. 3/13",
+        "B. 3/4",
+        "C. 4/5",
+        "D. 13/4"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 88,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Nura made a square poster with a side length of 13 inches. Latrice made a square poster with a side length of 15 inches. What is the difference, in square inches, between the area of Latrice's poster and the area of Nura's poster?",
+      "choices": [
+        "E. 56",
+        "F. 8",
+        "G. 4",
+        "H. 2"
+      ],
+      "answer": "E"
+    },
+    {
+      "number": 89,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "A recipe for 4 servings of oatmeal uses 2/3 cup of oats and 3 3/4 cups of water. What is the unit rate for cups of oats per cup of water?",
+      "choices": [
+        "A. 1/6",
+        "B. 8/39",
+        "C. 13/16",
+        "D. 13/8"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 90,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "If 3/5 − 1/4 x = 1/2 + 2/3, what is the value of x?",
+      "choices": [
+        "E. 11/120",
+        "F. 2/7",
+        "G. 5/6",
+        "H. 55/6"
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 91,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "In a certain state, the sales tax rate increased from 7.0% to 7.5%. What was the increase in the sales tax on a $200 item?",
+      "choices": [
+        "A. $1",
+        "B. $10",
+        "C. $14",
+        "D. $15"
+      ],
+      "answer": "A"
+    },
+    {
+      "number": 92,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Evaluate: |(−8) − 12 + (−17) − (−31)| − |24|",
+      "choices": [
+        "E. −30",
+        "F. −18",
+        "G. 18",
+        "H. 44"
+      ],
+      "answer": "F"
+    },
+    {
+      "number": 93,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Cell phone sales by color: White = 8k%, Black = 30%, Blue = (30 − 2k)%, Red = (k + 5)%, Total = 100%. What percentage of the cell phones sold were blue?",
+      "choices": [
+        "A. 18%",
+        "B. 20%",
+        "C. 22%",
+        "D. 28%"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 94,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "On a number line, the distance between X and Y is 1 unit, and the distance between Y and Z is 2 units. What is the distance, in units, between Y and the midpoint of XZ?",
+      "choices": [
+        "E. 1/2",
+        "F. 1",
+        "G. 1 1/2",
+        "H. 3"
+      ],
+      "answer": "E"
+    },
+    {
+      "number": 95,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "By what percent did the price of a cup of coffee increase if its price was increased from $1.25 to $1.35?",
+      "choices": [
+        "A. 7%",
+        "B. 8%",
+        "C. 10%",
+        "D. 12%"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 96,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Raquel is making a pyramid with a square base. Each triangular side has dimensions 13 in., 13 in., and 10 in. (height 12 in.). What will be the total surface area, in square inches, of the pyramid including the square base?",
+      "choices": [
+        "E. 280",
+        "F. 295",
+        "G. 340",
+        "H. 360"
+      ],
+      "answer": "G"
+    },
+    {
+      "number": 97,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "The price of a sandwich was raised from $6.25 to $6.75. What was the percent increase in the price?",
+      "choices": [
+        "A. 5%",
+        "B. 8%",
+        "C. 7%",
+        "D. 50%"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 98,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Terrell played 5 computer games and earned a mean score of 8 points per game. If his mean score for the first 4 games was 7 points per game, how many points was his score in the fifth game?",
+      "choices": [
+        "E. 9",
+        "F. 11",
+        "G. 12",
+        "H. 14"
+      ],
+      "answer": "G"
+    },
+    {
+      "number": 99,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Lian bought enough oranges to fill 4 bags, each containing 8 oranges. The total cost was $11.52. At that rate, how much would Lian pay for 42 oranges?",
+      "choices": [
+        "A. $17.28",
+        "B. $15.12",
+        "C. $15.02",
+        "D. $12.52"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 100,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "3.6 ÷ 0.018 =",
+      "choices": [
+        "E. 0.005",
+        "F. 0.648",
+        "G. 20",
+        "H. 200"
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 101,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "A tank with a 500-gallon capacity currently contains 75 gallons of water. Additional water is poured in at a rate of 5 gallons per minute. After 45 minutes of adding water, what percentage of the tank's total capacity will be filled?",
+      "choices": [
+        "A. 45%",
+        "B. 55%",
+        "C. 60%",
+        "D. 70%"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 102,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Misha wants to use ribbon to make 2 straps for a backpack. The ribbon costs $5.00 a yard. Each strap requires 1 1/4 yards of ribbon. How much will Misha pay for the ribbon?",
+      "choices": [
+        "E. $4.00",
+        "F. $6.25",
+        "G. $11.25",
+        "H. $12.50"
+      ],
+      "answer": "H"
+    },
+    {
+      "number": 103,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "A graph shows the proportional relationship between the number of test questions a student gets correct, x, and the student's test score, y. The ordered pair (1, 5/4) is on the graph. What does the y-coordinate of the ordered pair represent in this relationship?",
+      "choices": [
+        "A. The test will last 1 1/4 hours.",
+        "B. Each test question is worth 1 1/4 points.",
+        "C. An average student can answer 5 questions in 4 minutes.",
+        "D. A student who answers 5 questions correctly will earn 4 points."
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 104,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "In a survey of 200 adults in Waskegon, 45 reported reading the online version of the Waskegon Bulletin the previous day. If 25,000 adults live in Waskegon, which number is the best estimate of the number of adults who read the online version the previous day?",
+      "choices": [
+        "E. 5,600",
+        "F. 9,000",
+        "G. 11,300",
+        "H. 24,800"
+      ],
+      "answer": "E"
+    },
+    {
+      "number": 105,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "A hiker plans on hiking 17 miles in 3 days. Which equation describes the relationship between the number of days hiked, x, and the number of miles traveled, y?",
+      "choices": [
+        "A. y = 3/17 x",
+        "B. y = 3x",
+        "C. y = 17/3 x",
+        "D. y = 17x"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 106,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Carolyn walked 3 miles from her house to the library and then 2 1/2 miles farther to the grocery store. Returning home by the same route, she walked 1 2/3 miles before stopping at a friend's house. How many miles did Carolyn have left to walk home?",
+      "choices": [
+        "E. 3 5/6",
+        "F. 4 1/6",
+        "G. 4 2/3",
+        "H. 7 1/6"
+      ],
+      "answer": "E"
+    },
+    {
+      "number": 107,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "A child grows 1 1/4 inches in 1/3 of a year. What would be his yearly growth rate in inches per year?",
+      "choices": [
+        "A. 5/12",
+        "B. 3 1/4",
+        "C. 3 3/4",
+        "D. 4 1/4"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 108,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "3(0.01) − 3(0.1) =",
+      "choices": [
+        "E. −0.33",
+        "F. −0.27",
+        "G. 0",
+        "H. 0.33"
+      ],
+      "answer": "F"
+    },
+    {
+      "number": 109,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "What is the value of 10(1/3) + (−5 1/2) − (−2 3/4)?",
+      "choices": [
+        "A. 2 5/12",
+        "B. 7 11/12",
+        "C. 13 1/12",
+        "D. 18 7/12"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 110,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "Carlos has $350 in a savings account that earns 5% simple interest each year. How much will he have in the account after 1 year, if there is no money withdrawn?",
+      "choices": [
+        "E. $17.50",
+        "F. $175.00",
+        "G. $367.50",
+        "H. $525.00"
+      ],
+      "answer": "G"
+    },
+    {
+      "number": 111,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "The probability of an event occurring is 0.05. What is the chance that the event will occur?",
+      "choices": [
+        "A. likely",
+        "B. unlikely",
+        "C. impossible",
+        "D. neither likely nor unlikely"
+      ],
+      "answer": "B"
+    },
+    {
+      "number": 112,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "A purple paint mixture uses 1 cup red to 1.5 cups blue, and 4 cups red to 6 cups blue. Based on this proportional relationship, if 11 cups of red paint are used, what is the value of y (cups of blue paint)?",
+      "choices": [
+        "E. 10.5",
+        "F. 13",
+        "G. 16.5",
+        "H. 24"
+      ],
+      "answer": "G"
+    },
+    {
+      "number": 113,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "On a number line, P is at −2, Q is at 1, and R is at 7. What is the distance, in units, between the midpoint of PQ and the midpoint of QR?",
+      "choices": [
+        "A. 3",
+        "B. 4",
+        "C. 5",
+        "D. 6"
+      ],
+      "answer": "C"
+    },
+    {
+      "number": 114,
+      "section": "math",
+      "subsection": "multiple_choice",
+      "question": "An ice cream shop sells 16 cups of ice cream for $48 and 4 cups for $12. There is a proportional relationship between the number of cups and the cost. What is the constant of proportionality for this relationship?",
+      "choices": [
+        "E. 3 cups per dollar",
+        "F. 3 dollars per cup",
+        "G. 4 cups per dollar",
+        "H. 4 dollars per cup"
+      ],
+      "answer": "F"
+    }
+  ]
+}
