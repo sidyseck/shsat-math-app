@@ -222,26 +222,24 @@ Respond ONLY with JSON of this exact shape:
         };
       }
 
-      // Map finalAnswer to one of the 4 choices
+      // Map finalAnswer to one of the 4 choices — exact match first, then closest
       let correctIndex = -1;
+      let closestIndex = -1;
+      let closestDiff = Infinity;
+
       for (let i = 0; i < choices.length; i++) {
-        const raw = (choices[i] ?? "").toString();
-        const num = parseChoiceToNumber(raw);
-        if (!Number.isNaN(num) && Math.abs(num - finalAnswer) < 1e-6) {
-          correctIndex = i;
-          break;
-        }
+        const num = parseChoiceToNumber((choices[i] ?? "").toString());
+        if (Number.isNaN(num)) continue;
+        const diff = Math.abs(num - finalAnswer);
+        if (diff < 1e-6) { correctIndex = i; break; }
+        if (diff < closestDiff) { closestDiff = diff; closestIndex = i; }
       }
 
       if (correctIndex === -1) {
-        console.error("Could not match finalAnswer to any choice:", {
-          finalAnswer,
-          choices,
-        });
-        return {
-          statusCode: 500,
-          body: JSON.stringify({ error: "Could not match finalAnswer to any choice" }),
-        };
+        // Fall back to closest numeric choice rather than erroring
+        correctIndex = closestIndex !== -1 ? closestIndex : 0;
+        console.warn("Exact match failed, using closest choice:", { finalAnswer, choices, correctIndex });
+        result.solution = `Note: computed answer was ${finalAnswer}, matched to closest choice.\n\n${result.solution || ""}`;
       }
 
       const isCorrect = userIndex === correctIndex;
