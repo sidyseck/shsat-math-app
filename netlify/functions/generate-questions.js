@@ -9,8 +9,12 @@ function pickExamples(section, subsection, n) {
     (!subsection || q.subsection === subsection) &&
     q.choices && q.choices.length === 4
   );
-  const shuffled = pool.sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, n);
+  // Fisher-Yates shuffle for unbiased random selection
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, n);
 }
 
 // Format a bank question into a readable few-shot example string
@@ -229,6 +233,13 @@ ${readingCount > 0 ? `READING COMPREHENSION examples:\n${pickExamples("ela", "re
 `;
     }
 
+    // Always append a variety directive with a random seed to break model anchoring
+    const contexts = subject === "math"
+      ? ["a school fundraiser", "a construction project", "a science experiment", "a sports league", "a bakery", "a road trip", "a garden", "a swimming pool", "a library", "a stock portfolio"]
+      : ["environmental science", "ancient history", "modern art", "space exploration", "immigration", "music theory", "economics", "civil rights", "marine biology", "architecture"];
+    const pickedContext = contexts[Math.floor(Math.random() * contexts.length)];
+    userPrompt += `\nVariety requirement: use a fresh context or scenario not seen recently. Suggested theme to draw from: "${pickedContext}". Vary character names, numbers, and settings across questions.\n`;
+
     if (recentPrompts.length > 0) {
       userPrompt += `\nDo NOT repeat or closely paraphrase any of these recently seen questions:\n${recentPrompts.map((p, i) => `${i + 1}. ${p}`).join("\n")}\n`;
     }
@@ -259,7 +270,7 @@ Always return valid JSON only — no markdown, no commentary outside the JSON.`,
         messages: [
           { role: "user", content: userPrompt },
         ],
-        temperature: subject === "ela" ? 1.0 : 0.2,
+        temperature: subject === "ela" ? 1.0 : 0.7,
       }),
     });
 
