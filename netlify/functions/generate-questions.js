@@ -30,6 +30,7 @@ exports.handler = async (event) => {
     const difficulty = body.difficulty || "medium";
     const count = Math.max(1, Math.min(10, Number(body.count) || 5));
     const recentPrompts = Array.isArray(body.recentPrompts) ? body.recentPrompts.slice(0, 20) : [];
+    const recentGenres = Array.isArray(body.recentGenres) ? body.recentGenres.slice(0, 6) : [];
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
@@ -130,7 +131,8 @@ PART 1 — READING COMPREHENSION (${readingCount} questions)
 
 Step 1: Write ONE passage.
 - 4–6 paragraphs, 350–500 words.
-- Genre: choose one — realistic fiction, literary nonfiction (memoir/historical), or informational/argumentative (science, history, social issues).
+- Genre: choose one — realistic fiction, literary nonfiction (memoir/historical), or informational/argumentative (science, history, social issues).${recentGenres.length > 0 ? `\n- AVOID these recently used genres/topics: ${recentGenres.join(", ")}. Pick something clearly different.` : ""}
+- Also include a "passageGenre" field at the top level of your JSON (e.g. "realistic fiction", "historical nonfiction", "science informational") so the system can track variety.
 - Level: strong 7th–8th grade. Complex sentences, varied vocabulary, NOT childish.
 - The passage must reward careful reading — include implicit meaning, shifting tone, or layered ideas that support inference questions.
 
@@ -229,7 +231,7 @@ Always return valid JSON only — no markdown, no commentary outside the JSON.`,
         messages: [
           { role: "user", content: userPrompt },
         ],
-        temperature: 0.2,
+        temperature: subject === "ela" ? 1.0 : 0.2,
       }),
     });
 
