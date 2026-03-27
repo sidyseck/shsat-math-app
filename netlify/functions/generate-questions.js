@@ -1,5 +1,20 @@
 // netlify/functions/generate-questions.js
 
+// Extracts the first balanced {...} block from a string, ignoring braces inside strings
+function extractJson(text) {
+  let depth = 0, start = -1, inString = false, escape = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (escape) { escape = false; continue; }
+    if (c === '\\' && inString) { escape = true; continue; }
+    if (c === '"') { inString = !inString; continue; }
+    if (inString) continue;
+    if (c === '{') { if (start === -1) start = i; depth++; }
+    else if (c === '}') { depth--; if (depth === 0 && start !== -1) return text.slice(start, i + 1); }
+  }
+  return null;
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return {
@@ -257,7 +272,7 @@ Always return valid JSON only — no markdown, no commentary outside the JSON.`,
     let questionsPayload;
     try {
       const cleaned = content.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
-      questionsPayload = JSON.parse(cleaned);
+      questionsPayload = JSON.parse(extractJson(cleaned) ?? cleaned);
     } catch (e) {
       console.error("Failed to parse JSON from model:", content);
       return {
@@ -330,8 +345,7 @@ Rules:
       if (!solverContent) return null;
 
       const solverCleaned = solverContent.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
-      const jsonMatch = solverCleaned.match(/\{[\s\S]*\}/);
-      const solverResult = JSON.parse(jsonMatch ? jsonMatch[0] : solverCleaned);
+      const solverResult = JSON.parse(extractJson(solverCleaned) ?? solverCleaned);
 
       const ci = solverResult.correctIndex;
       if (!Number.isInteger(ci) || ci < 0 || ci >= q.choices.length) return null;

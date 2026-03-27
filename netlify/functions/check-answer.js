@@ -1,5 +1,19 @@
 // netlify/functions/check-answer.js
 
+function extractJson(text) {
+  let depth = 0, start = -1, inString = false, escape = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (escape) { escape = false; continue; }
+    if (c === '\\' && inString) { escape = true; continue; }
+    if (c === '"') { inString = !inString; continue; }
+    if (inString) continue;
+    if (c === '{') { if (start === -1) start = i; depth++; }
+    else if (c === '}') { depth--; if (depth === 0 && start !== -1) return text.slice(start, i + 1); }
+  }
+  return null;
+}
+
 // Helper: convert a choice string like "3/8 cup" or "1 1/2" or "0.375" to a number
 function parseChoiceToNumber(raw) {
   if (raw == null) return NaN;
@@ -176,8 +190,7 @@ Respond ONLY with JSON of this exact shape:
     let result;
     try {
       const cleaned = content.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
-      const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
-      result = JSON.parse(jsonMatch ? jsonMatch[0] : cleaned);
+      result = JSON.parse(extractJson(cleaned) ?? cleaned);
     } catch (e) {
       console.error("Failed to parse solver JSON:", content);
       return {
