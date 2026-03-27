@@ -281,8 +281,7 @@ if (subject === "math") {
       continue;
     }
 
-    const solverPrompt = `
-You are solving a SHSAT-style math question. Choose which answer choice is correct.
+    const solverPrompt = `Solve this SHSAT math question and identify the correct answer choice.
 
 Question:
 ${q.prompt}
@@ -293,17 +292,17 @@ B) ${q.choices[1]}
 C) ${q.choices[2]}
 D) ${q.choices[3]}
 
-Respond ONLY with JSON of this shape:
+YOUR RESPONSE MUST BE ONLY RAW JSON — no prose, no markdown, no explanation outside the JSON.
 
 {
   "correctIndex": 0,
   "solution": "step-by-step explanation here"
 }
 
-Where:
-- correctIndex is 0 for A, 1 for B, 2 for C, 3 for D.
-- solution clearly explains how you got the answer.
-`;
+Rules:
+- correctIndex: 0 = A, 1 = B, 2 = C, 3 = D
+- solution: concise step-by-step explanation inside the JSON string
+- Do NOT write anything before or after the JSON object`;
 
     const solverResponse = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -340,7 +339,9 @@ Where:
     let solverResult;
     try {
       const solverCleaned = solverContent.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
-      solverResult = JSON.parse(solverCleaned);
+      // Fallback: extract first {...} block if the model added surrounding text
+      const jsonMatch = solverCleaned.match(/\{[\s\S]*\}/);
+      solverResult = JSON.parse(jsonMatch ? jsonMatch[0] : solverCleaned);
     } catch (e) {
       console.error("Failed to parse solver JSON:", solverContent);
       continue;
