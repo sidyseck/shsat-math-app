@@ -1,6 +1,6 @@
 // netlify/functions/get-stats.js
 
-exports.handler = async () => {
+exports.handler = async (event) => {
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
@@ -13,18 +13,33 @@ exports.handler = async () => {
     "Authorization": `Bearer ${supabaseKey}`,
   };
 
-  try {
-    // Fetch all answers with session created_at for time series
-    const [answersRes, sessionsRes] = await Promise.all([
-      fetch(`${supabaseUrl}/rest/v1/answers?select=*&order=created_at.asc`, { headers }),
-      fetch(`${supabaseUrl}/rest/v1/sessions?select=*&order=created_at.asc`, { headers }),
-    ]);
+  // Filter by user_id if provided
+  const params = event.queryStringParameters || {};
+  const userId = params.userId || null;
+  const sessionFilter = userId ? `&user_id=eq.${encodeURIComponent(userId)}` : "";
 
-    const answers = await answersRes.json();
+  try {
+    // Fetch sessions (filtered by user), then answers for those sessions
+    const sessionsRes = await fetch(
+      `${supabaseUrl}/rest/v1/sessions?select=*&order=created_at.asc${sessionFilter}`,
+      { headers }
+    );
     const sessions = await sessionsRes.json();
 
-    if (!Array.isArray(answers) || !Array.isArray(sessions)) {
+    if (!Array.isArray(sessions)) {
       return { statusCode: 500, body: JSON.stringify({ error: "Unexpected response from Supabase" }) };
+    }
+
+    // Fetch only answers belonging to this user's sessions
+    let answers = [];
+    if (sessions.length > 0) {
+      const sessionIds = sessions.map(s => s.id).join(",");
+      const answersRes = await fetch(
+        `${supabaseUrl}/rest/v1/answers?select=*&session_id=in.(${sessionIds})&order=created_at.asc`,
+        { headers }
+      );
+      answers = await answersRes.json();
+      if (!Array.isArray(answers)) answers = [];
     }
 
     // --- Overall stats ---

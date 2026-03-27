@@ -148,14 +148,53 @@
     }
     .feedback.correct { color: #4ade80; }
     .feedback.incorrect { color: #f97373; }
+
+    /* Login screen */
+    #login-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      gap: 16px;
+      text-align: center;
+    }
+    #login-screen h2 { font-size: 1.2rem; margin: 0; }
+    #login-screen p { color: #64748b; font-size: 0.85rem; margin: 0; }
+    #login-screen input {
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: #0f172a;
+      color: #f9fafb;
+      font-size: 1rem;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      width: 180px;
+    }
+    #login-error { color: #f87171; font-size: 0.8rem; min-height: 1em; }
   </style>
 </head>
 <body>
   <div class="app">
+    <!-- Login screen -->
+    <div id="login-screen" style="display:none">
+      <h2>Welcome to SHSAT Practice</h2>
+      <p>Enter your access code to get started</p>
+      <input id="uid-input" type="text" placeholder="e.g. ALEX2025" maxlength="20" />
+      <button class="btn-primary" id="login-btn">Enter</button>
+      <div id="login-error"></div>
+    </div>
+
+    <!-- Main app (hidden until logged in) -->
+    <div id="main-app" style="display:none">
     <div class="header">
-      <h1>SHSAT Math Practice</h1>
+      <h1>SHSAT Practice</h1>
       <div style="display:flex;gap:10px;align-items:center">
+        <span id="user-greeting" style="font-size:0.8rem;color:#94a3b8"></span>
         <a href="/progress.html" style="font-size:0.8rem;color:#6366f1;text-decoration:none">📊 Progress</a>
+        <button onclick="logout()" style="font-size:0.75rem;background:none;border:1px solid rgba(148,163,184,0.3);color:#64748b;padding:4px 10px">Switch user</button>
         <div class="chip">LLM-generated · For 7th grade</div>
       </div>
     </div>
@@ -318,7 +357,7 @@ subjectSelect.addEventListener("change", () => {
         fetch("/.netlify/functions/save-result", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "create_session", sessionId: currentSessionId, subject, difficulty }),
+          body: JSON.stringify({ action: "create_session", sessionId: currentSessionId, subject, difficulty, userId: window.currentUserId || null }),
         }).catch(err => console.error("Failed to create session:", err));
 
         renderQuestions();
@@ -475,6 +514,73 @@ subjectSelect.addEventListener("change", () => {
         questionsContainer.appendChild(card);
       });
     }
+  </script>
+  </div> <!-- /main-app -->
+  </div> <!-- /app -->
+
+  <script>
+    const LOGIN_KEY = "shsat_user";
+
+    function getUser() {
+      try { return JSON.parse(localStorage.getItem(LOGIN_KEY)); }
+      catch { return null; }
+    }
+
+    function logout() {
+      localStorage.removeItem(LOGIN_KEY);
+      location.reload();
+    }
+
+    async function init() {
+      const user = getUser();
+      if (user) {
+        showApp(user);
+      } else {
+        document.getElementById("login-screen").style.display = "flex";
+      }
+    }
+
+    function showApp(user) {
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("main-app").style.display = "block";
+      document.getElementById("user-greeting").textContent = `Hi, ${user.name} 👋`;
+      // Expose userId globally so session creation can use it
+      window.currentUserId = user.uid;
+    }
+
+    document.getElementById("login-btn").addEventListener("click", async () => {
+      const uid = document.getElementById("uid-input").value.trim().toUpperCase();
+      const errEl = document.getElementById("login-error");
+      errEl.textContent = "";
+      if (!uid) return;
+
+      document.getElementById("login-btn").disabled = true;
+      document.getElementById("login-btn").textContent = "Checking...";
+
+      try {
+        const res = await fetch("/.netlify/functions/get-user", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ uid }),
+        });
+        if (res.status === 404) { errEl.textContent = "Code not found. Try again."; return; }
+        if (!res.ok) { errEl.textContent = "Something went wrong. Try again."; return; }
+        const user = await res.json();
+        localStorage.setItem(LOGIN_KEY, JSON.stringify(user));
+        showApp(user);
+      } catch {
+        errEl.textContent = "Connection error. Try again.";
+      } finally {
+        document.getElementById("login-btn").disabled = false;
+        document.getElementById("login-btn").textContent = "Enter";
+      }
+    });
+
+    document.getElementById("uid-input").addEventListener("keydown", e => {
+      if (e.key === "Enter") document.getElementById("login-btn").click();
+    });
+
+    init();
   </script>
 </body>
 </html>

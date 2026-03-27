@@ -111,20 +111,40 @@
 <body>
 <div class="app">
   <div class="header">
-    <h1>Progress Tracker</h1>
-    <a href="/">← Back to Practice</a>
+    <div>
+      <h1>Progress Tracker</h1>
+      <div id="user-label" style="font-size:0.8rem;color:#64748b;margin-top:4px"></div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <a href="/" style="font-size:0.8rem;color:#6366f1;text-decoration:none">← Back to Practice</a>
+      <button onclick="logout()" style="font-size:0.75rem;cursor:pointer;background:none;border:1px solid rgba(148,163,184,0.3);color:#64748b;padding:4px 10px;border-radius:999px">Switch user</button>
+    </div>
   </div>
 
   <div id="root"><p class="status">Loading...</p></div>
 </div>
 
 <script>
+  const LOGIN_KEY = "shsat_user";
+  function getUser() {
+    try { return JSON.parse(localStorage.getItem(LOGIN_KEY)); }
+    catch { return null; }
+  }
+  function logout() {
+    localStorage.removeItem(LOGIN_KEY);
+    window.location.href = "/";
+  }
+
 async function load() {
   const root = document.getElementById("root");
 
+  const user = getUser();
+  if (!user) { window.location.href = "/"; return; }
+  document.getElementById("user-label").textContent = user.name;
+
   let data;
   try {
-    const res = await fetch("/.netlify/functions/get-stats");
+    const res = await fetch(`/.netlify/functions/get-stats?userId=${encodeURIComponent(user.uid)}`);
     if (!res.ok) throw new Error("Server error " + res.status);
     data = await res.json();
   } catch (err) {

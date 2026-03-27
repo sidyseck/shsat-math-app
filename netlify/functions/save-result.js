@@ -21,7 +21,7 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body || "{}");
-    const { sessionId, subject, difficulty, topic, isCorrect, action } = body;
+    const { sessionId, subject, difficulty, topic, isCorrect, action, userId } = body;
 
     // Create or upsert a session row
     if (action === "create_session") {
@@ -32,7 +32,7 @@ exports.handler = async (event) => {
       const res = await fetch(`${supabaseUrl}/rest/v1/sessions`, {
         method: "POST",
         headers,
-        body: JSON.stringify({ id: sessionId, subject, difficulty }),
+        body: JSON.stringify({ id: sessionId, subject, difficulty, user_id: userId || null }),
       });
 
       if (!res.ok) {
