@@ -15,11 +15,11 @@ exports.handler = async (event) => {
     const difficulty = body.difficulty || "medium";
     const count = Math.max(1, Math.min(10, Number(body.count) || 5));
 
-    const apiKey = process.env.OPENAI_API_KEY;
+    const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: "OPENAI_API_KEY is not set" }),
+        body: JSON.stringify({ error: "ANTHROPIC_API_KEY is not set" }),
       };
     }
 
@@ -199,27 +199,39 @@ There should be exactly ${count} questions.
 `;
     }
 
-    // Call OpenAI Chat Completions API
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    // Call Anthropic Messages API
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4o", // or another suitable model
+        model: "claude-sonnet-4-6",
+        max_tokens: 4096,
+        system: `You are an expert SHSAT test prep tutor. Generate questions at the EXACT difficulty level of the real SHSAT exam administered by the NYC DOE.
+
+SHSAT-specific rules:
+- Scrambled Paragraphs: sentences must have subtle logical traps where 2-3 orderings seem plausible
+- Logical Reasoning: use multi-step deductions, NOT obvious one-step logic
+- Reading Comprehension: base questions on dense, complex passages (science, history, philosophy); ask about implied meaning, author's purpose, tone — never just literal recall
+- Math: include 2-3 step word problems, number theory, geometry with algebraic unknowns, and combinatorics
+- Wrong answer choices must be "attractive wrong answers" — common misconceptions or off-by-one errors
+
+After generating each question, self-critique: "Would an 8th grader find this trivially easy?" If yes, increase complexity before outputting.
+
+Always return valid JSON only — no markdown, no commentary outside the JSON.`,
         messages: [
-          { role: "system", content: "You are a careful SHSAT-style question generator. Always return valid JSON." },
           { role: "user", content: userPrompt },
         ],
         temperature: 0.2,
-        response_format: { type: "json_object" },
       }),
     });
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error("OpenAI API error:", errText);
+      console.error("Anthropic API error:", errText);
       return {
         statusCode: 500,
         body: JSON.stringify({ error: "LLM request failed", details: errText }),
@@ -227,7 +239,7 @@ There should be exactly ${count} questions.
     }
 
     const data = await response.json();
-    const content = data.choices?.[0]?.message?.content;
+    const content = data.content?.[0]?.text;
 
     if (!content) {
       console.error("No content in OpenAI response:", JSON.stringify(data, null, 2));
@@ -292,20 +304,21 @@ Where:
 - solution clearly explains how you got the answer.
 `;
 
-    const solverResponse = await fetch("https://api.openai.com/v1/chat/completions", {
+    const solverResponse = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4o", // or "gpt-4o-mini" if you prefer, but 4o is more reliable
+        model: "claude-sonnet-4-6",
+        max_tokens: 1024,
+        system: "You are a careful SHSAT math solver. Always return valid JSON.",
         messages: [
-          { role: "system", content: "You are a careful SHSAT math solver. Always return valid JSON." },
           { role: "user", content: solverPrompt },
         ],
         temperature: 0.1,
-        response_format: { type: "json_object" },
       }),
     });
 
@@ -316,7 +329,7 @@ Where:
     }
 
     const solverData = await solverResponse.json();
-    const solverContent = solverData.choices?.[0]?.message?.content;
+    const solverContent = solverData.content?.[0]?.text;
 
     if (!solverContent) {
       console.error("No content from solver for question:", q);
