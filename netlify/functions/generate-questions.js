@@ -54,14 +54,14 @@ Core style (very important):
 
 Reasoning requirements:
 - Each question must require at least 3 distinct math reasoning steps (set up, transform, solve, interpret).
-- Avoid one-step or “plug in numbers and compute once” problems.
+- Avoid one-step or "plug in numbers and compute once" problems.
 - At most 1 small arithmetic step can be trivial; the rest must involve reasoning (setting proportions, equations, or combining conditions).
 
 Question format:
 - 100% must be word problems.
-- NO bare “compute” questions like “What is 35 × 12?”
+- NO bare "compute" questions like "What is 35 × 12?"
 - Use realistic contexts: money, discounts, tax, simple interest, time/distance/rate, averages, mixtures, test scores, geometry in context (perimeter, area, angles, volume), tables, simple charts described in words, ratios and proportions, integer operations, inequalities.
-- Use grade 7–8 math vocabulary: “constant rate,” “proportional,” “scale factor,” “linear relationship,” “term,” “expression,” “inequality,” etc.
+- Use grade 7–8 math vocabulary: "constant rate," "proportional," "scale factor," "linear relationship," "term," "expression," "inequality," etc.
 - Hide the math slightly inside the wording so the student has to read carefully.
 
 Topic coverage:
@@ -77,7 +77,7 @@ Difficulty:
 - "Hard": 4 to 5 steps, layered conditions, or combined topics (e.g., percent + ratio, geometry + algebra). The path to the answer should not be obvious.
 
 Numbers and realism:
-- Use mostly non-trivial numbers (e.g., 18, 27, 45, 72, 150, 240) rather than very small or “too clean” ones, unless the difficulty is easy.
+- Use mostly non-trivial numbers (e.g., 18, 27, 45, 72, 150, 240) rather than very small or "too clean" ones, unless the difficulty is easy.
 - Allow fractions or decimals in choices when natural (e.g., 1.5, 2.4, 3/5).
 - Keep arithmetic within what a strong 8th grader can do without a calculator.
 
@@ -90,7 +90,7 @@ Answer choices:
   - using the wrong total/denominator in a ratio,
   - making a typical order-of-operations or equation setup error.
 - Do NOT say or hint which choice is correct.
-- Do NOT include phrases like “Correct answer:”, “The answer is”, or any solution steps.
+- Do NOT include phrases like "Correct answer:", "The answer is", or any solution steps.
 
 Constraints:
 - Only math; NO reading-comprehension-style questions.
@@ -116,102 +116,86 @@ There should be exactly ${count} questions.
 
     }else {
       // ELA mode: reading + editing SHSAT-style
+      const readingCount = topic === "editing" ? 0 : topic === "reading" ? count : Math.max(1, Math.ceil(count * 0.6));
+      const editingCount = count - readingCount;
+
       userPrompt = `
-You are generating SHSAT-style ELA multiple-choice questionms.
+You are generating ${count} SHSAT-style ELA questions: ${readingCount} reading comprehension and ${editingCount} revising & editing.
 
-Overall requirements:
-- ONLY English Language Arts tasks.
-- Match the tone, structure, and difficulty of official NYC SHSAT ELA questions.
-- Two main types:
-  1) READING COMPREHENSION with a short passage (3–6 short paragraphs, about 250–450 words) and questions about meaning, inference, vocabulary-in-context, structure, or author's purpose.
-  2) REVISING & EDITING short sentences or very short paragraphs (grammar, punctuation, clarity, word choice, sentence structure, and transitions).
+Difficulty: ${difficulty}
 
-Difficulty and topic control:
-- Difficulty: ${difficulty} (easy/medium/hard).
-  - "Easy": straightforward main idea, explicit details, basic grammar or punctuation.
-  - "Medium": mix of literal and inferential questions, more subtle word choice, multi-clause sentences, common grammar traps.
-  - "Hard": nuanced inference, author's attitude/tone, subtle vocabulary in context, and revision questions involving multiple errors or tricky sentence structure.
-- Topic preference: ${topic}.
-  - If topic === "reading": most or all questions should be reading-comprehension style.
-  - If topic === "editing": most or all questions should be revising & editing style.
-  - If topic === "mixed": mix both styles across the ${count} questions.
+════════════════════════════════
+PART 1 — READING COMPREHENSION (${readingCount} questions)
+════════════════════════════════
 
-READING COMPREHENSION style (SHSAT-like):
-- Use topic: "reading".
-- Include a passage field with the full passage text for each reading question.
-- Passages should be:
-  - 3 to 6 short paragraphs, about 250 to 450 words total.
-  - Written at a strong 7th to 8th grade reading level.
-  - Clear but not childish; include some complex sentences and varied vocabulary.
-- Passage genres:
-  - Realistic fiction (scenes with characters, dialogue, internal thoughts).
-  - Literary nonfiction (memoir-like scenes, historical moments, personal reflections).
-  - Informational or argumentative text (science, history, social topics) with a clear central idea.
-- Reading question types (vary across questions):
-  - Main idea / central idea.
-  - Key detail / supporting evidence.
-  - Inference about character, motivation, or implied ideas.
-  - Vocabulary in context (choose the best meaning of a word or phrase as used in the passage).
-  - Author's purpose, tone, or attitude.
-  - Text structure or the role of a particular paragraph or sentence.
-- Avoid trivia-type questions; each question should require careful reading and reasoning, not just grabbing a random detail.
+Step 1: Write ONE passage.
+- 4–6 paragraphs, 350–500 words.
+- Genre: choose one — realistic fiction, literary nonfiction (memoir/historical), or informational/argumentative (science, history, social issues).
+- Level: strong 7th–8th grade. Complex sentences, varied vocabulary, NOT childish.
+- The passage must reward careful reading — include implicit meaning, shifting tone, or layered ideas that support inference questions.
 
-REVISING & EDITING style (SHSAT-like):
-- Use topic: "editing".
-- No passage field is required (but you may include a short 1–3 sentence context if needed).
-- Focus on:
-  - Grammar: subject-verb agreement, pronoun agreement, verb tense consistency.
-  - Punctuation: commas in compound or complex sentences, commas with introductory phrases, apostrophes, and end punctuation.
-  - Sentence structure: run-ons, fragments, awkward phrasing, misplaced or dangling modifiers.
-  - Clarity and concision: choosing the best word or phrase, removing redundancy.
-  - Transitions and logical connections between ideas.
-- Typical formats:
-  - “Which revision of the underlined portion is best?”
-  - “Which sentence best combines these two sentences?”
-  - “Which choice correctly completes the sentence?”
-  - “Which choice makes the paragraph clearer or more formal?”
+Step 2: Write exactly ${readingCount} questions about that passage. Use a VARIETY of these types (do not repeat the same type):
+- Central idea or main argument
+- Key detail with supporting evidence
+- Inference about character motive, implied meaning, or cause/effect
+- Vocabulary in context (meaning of a specific word or phrase AS USED in the passage)
+- Author's purpose, tone, or attitude
+- Role of a specific paragraph or sentence in the structure
 
-Answer choices and correctness:
-- Each question must have EXACTLY 4 answer choices: A, B, C, D.
-- Exactly ONE choice is correct for each question.
-- correctIndex must be an integer 0–3 corresponding to the correct choice in the choices array.
-- Wrong answer choices should be plausible:
-  - READING: reflect common misreadings, partial understanding, or misinterpretation of the passage.
-  - EDITING: reflect common grammar mistakes or almost-correct but slightly off phrasing.
-- Do NOT include explanations or reasoning. Do NOT say which letter is correct in the text; only use correctIndex.
+Wrong answer choices must be "attractive wrong answers": plausible misreadings, partially correct, or answers supported by only one part of the passage.
 
-JSON format requirements:
-- You may reuse the SAME passage text for multiple READING questions; to keep it simple, include the passage text in a passage field on EACH reading question that needs it.
-- For READING questions:
-  - Use topic: "reading".
-  - Include a passage string field with the passage text.
-- For EDITING questions:
-  - Use topic: "editing".
-  - They can be self-contained (no passage field needed) or include a very short context if helpful.
-- If topic === "mixed", the "topic" field on each question must correctly reflect that question's type: "reading" or "editing". Do NOT use "mixed" per-question.
+JSON for reading questions:
+- Set "topic": "reading" on every reading question.
+- Set "passage" to the FULL passage text on the FIRST reading question only.
+- Set "passage": "" on all subsequent reading questions (the frontend reuses the last passage seen).
 
-Return ONLY valid JSON with this shape:
+════════════════════════════════
+PART 2 — REVISING & EDITING (${editingCount} questions)
+════════════════════════════════
+
+Write exactly ${editingCount} standalone grammar/editing questions. Each is self-contained (no shared passage needed).
+
+Focus areas (vary across questions):
+- Subject-verb agreement, pronoun agreement, verb tense consistency
+- Commas in compound/complex sentences, introductory phrases, appositives, apostrophes
+- Run-ons, fragments, misplaced or dangling modifiers
+- Redundancy, clarity, word choice
+- Logical transitions between ideas
+
+Formats:
+- "Which revision of the underlined portion is best?"
+- "Which choice correctly completes the sentence?"
+- "Which sentence best combines these two sentences?"
+
+Wrong choices: reflect common student errors — comma splices, agreement mismatches, awkward-but-not-wrong phrasing.
+
+JSON for editing questions:
+- Set "topic": "editing".
+- Omit the "passage" field entirely.
+
+════════════════════════════════
+OUTPUT FORMAT
+════════════════════════════════
+
+Return ONLY valid JSON — no markdown, no text outside the JSON.
 
 {
   "questions": [
     {
-      "prompt": "question text here",
-      "passage": "passage text here (only for reading questions, otherwise omit this field)",
-      "choices": ["choice A", "choice B", "choice C", "choice D"],
+      "prompt": "question text",
+      "passage": "full passage (first reading question only) | empty string (subsequent reading) | omit (editing)",
+      "choices": ["A text", "B text", "C text", "D text"],
       "correctIndex": 0,
-      "topic": "reading | editing | mixed",
-      "difficulty": "easy | medium | hard"
+      "topic": "reading | editing",
+      "difficulty": "${difficulty}"
     }
   ]
 }
 
-Rules for JSON:
-- Double quotes around all keys and string values.
-- No trailing commas.
-- The "difficulty" field for each question must match one of: "easy", "medium", "hard".
-- The "topic" field should correctly describe the question type as used above.
-
-There should be exactly ${count} questions.
+Rules:
+- Exactly ${count} questions total (${readingCount} reading, then ${editingCount} editing).
+- Each question: exactly 4 choices, correctIndex 0–3, topic is "reading" or "editing".
+- No trailing commas. Double quotes on all keys and string values.
 `;
     }
 
@@ -229,7 +213,7 @@ There should be exactly ${count} questions.
       },
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
-        max_tokens: 4096,
+        max_tokens: 8192,
         system: `You are an expert SHSAT test prep tutor. Generate questions at the EXACT difficulty level of the real SHSAT exam administered by the NYC DOE.
 
 SHSAT-specific rules:
