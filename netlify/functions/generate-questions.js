@@ -251,7 +251,8 @@ Always return valid JSON only — no markdown, no commentary outside the JSON.`,
 
     let questionsPayload;
     try {
-      questionsPayload = JSON.parse(content);
+      const cleaned = content.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+      questionsPayload = JSON.parse(cleaned);
     } catch (e) {
       console.error("Failed to parse JSON from model:", content);
       return {
@@ -338,7 +339,8 @@ Where:
 
     let solverResult;
     try {
-      solverResult = JSON.parse(solverContent);
+      const solverCleaned = solverContent.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+      solverResult = JSON.parse(solverCleaned);
     } catch (e) {
       console.error("Failed to parse solver JSON:", solverContent);
       continue;
