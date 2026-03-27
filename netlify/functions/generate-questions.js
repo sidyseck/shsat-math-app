@@ -144,7 +144,8 @@ ${pickExamples("math", "multiple_choice", 3).map(formatExample).join("\n\n")}
 
     }else {
       // ELA mode: reading + editing SHSAT-style
-      const readingCount = topic === "editing" ? 0 : topic === "reading" ? count : Math.max(1, Math.ceil(count * 0.6));
+      // Reading capped at 5; all reading questions share one passage
+      const readingCount = topic === "editing" ? 0 : Math.min(5, topic === "reading" ? count : Math.max(1, Math.ceil(count * 0.6)));
       const editingCount = count - readingCount;
 
       userPrompt = `
@@ -156,8 +157,8 @@ Difficulty: ${difficulty}
 PART 1 — READING COMPREHENSION (${readingCount} questions)
 ════════════════════════════════
 
-Step 1: Write ONE passage.
-- 4–6 paragraphs, 350–500 words.
+Step 1: Write ONE passage. All ${readingCount} reading questions must be about this single passage.
+- Exactly 5 paragraphs, 350–500 words total.
 - Genre: choose one — realistic fiction, literary nonfiction (memoir/historical), or informational/argumentative (science, history, social issues).${recentGenres.length > 0 ? `\n- AVOID these recently used genres/topics: ${recentGenres.join(", ")}. Pick something clearly different.` : ""}
 - Also include a "passageGenre" field at the top level of your JSON (e.g. "realistic fiction", "historical nonfiction", "science informational") so the system can track variety.
 - Level: strong 7th–8th grade. Complex sentences, varied vocabulary, NOT childish.
