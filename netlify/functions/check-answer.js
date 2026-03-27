@@ -56,13 +56,26 @@ exports.handler = async (event) => {
       };
     }
 
-    const { prompt, choices, userIndex } = question;
+    const { prompt, choices, userIndex, correctIndex: precomputedIndex, solution: precomputedSolution } = question;
 
-    const apiKey = process.env.OPENAI_API_KEY;
+    // Math questions already have correctIndex from the generator — use it directly
+    if (subject === "math" && Number.isInteger(precomputedIndex) && precomputedIndex >= 0 && precomputedIndex < choices.length) {
+      return {
+        statusCode: 200,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          correctIndex: precomputedIndex,
+          isCorrect: userIndex === precomputedIndex,
+          solution: precomputedSolution || "",
+        }),
+      };
+    }
+
+    const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: "OPENAI_API_KEY is not set" }),
+        body: JSON.stringify({ error: "ANTHROPIC_API_KEY is not set" }),
       };
     }
 
@@ -109,43 +122,34 @@ B) ${choices[1]}
 C) ${choices[2]}
 D) ${choices[3]}
 
-The student chose: ${["A", "B", "C", "D"][userIndex] ?? "unknown"}.
-
 Tasks:
 1. Carefully analyze the question and the choices.
 2. Decide which ONE option (A, B, C, or D) is correct.
-3. Determine whether the student's choice is correct.
-4. Explain briefly why.
+3. Explain briefly why that option is correct.
 
 Respond ONLY with JSON of this exact shape:
 
 {
   "correctIndex": 0,
-  "isCorrect": true,
   "solution": "short explanation here"
 }
 `;
     }
 
-    // Call OpenAI Chat Completions API
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    // Call Anthropic Messages API
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4o", // or "gpt-4o-mini" if you want cheaper, but 4o is more reliable
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are a careful SHSAT question solver. Always return valid JSON and follow the requested schema exactly.",
-          },
-          { role: "user", content: solverPrompt },
-        ],
+        model: "claude-sonnet-4-6",
+        max_tokens: 1024,
+        system: "You are a careful SHSAT question solver. Always return valid JSON and follow the requested schema exactly.",
+        messages: [{ role: "user", content: solverPrompt }],
         temperature: 0.1,
-        response_format: { type: "json_object" },
       }),
     });
 
@@ -159,7 +163,7 @@ Respond ONLY with JSON of this exact shape:
     }
 
     const data = await response.json();
-    const content = data.choices?.[0]?.message?.content;
+    const content = data.content?.[0]?.text;
 
     if (!content) {
       console.error("No content in solver response:", JSON.stringify(data, null, 2));
@@ -171,7 +175,9 @@ Respond ONLY with JSON of this exact shape:
 
     let result;
     try {
-      result = JSON.parse(content);
+      const cleaned = content.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+      const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
+      result = JSON.parse(jsonMatch ? jsonMatch[0] : cleaned);
     } catch (e) {
       console.error("Failed to parse solver JSON:", content);
       return {
@@ -252,7 +258,7 @@ Respond ONLY with JSON of this exact shape:
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           correctIndex: ci,
-          isCorrect: !!result.isCorrect,
+          isCorrect: userIndex === ci,
           solution: result.solution || "",
         }),
       };
