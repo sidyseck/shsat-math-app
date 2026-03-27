@@ -245,12 +245,49 @@ subjectSelect.addEventListener("change", () => {
 });
 
     let currentQuestions = [];
+    let currentSessionId = null;
+
+    const HISTORY_KEY = "shsat_seen_prompts";
+    const GENRE_KEY = "shsat_seen_genres";
+    const HISTORY_MAX = 40;
+
+    function loadSeenPrompts() {
+      try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); }
+      catch { return []; }
+    }
+
+    function saveSeenPrompts(prompts) {
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(prompts.slice(-HISTORY_MAX)));
+    }
+
+    function loadSeenGenres() {
+      try { return JSON.parse(localStorage.getItem(GENRE_KEY) || "[]"); }
+      catch { return []; }
+    }
+
+    function addToSeenPrompts(questions) {
+      const seen = loadSeenPrompts();
+      for (const q of questions) {
+        const key = (q.prompt || "").slice(0, 120).trim();
+        if (key && !seen.includes(key)) seen.push(key);
+      }
+      saveSeenPrompts(seen);
+    }
+
+    function addToSeenGenres(genre) {
+      if (!genre) return;
+      const seen = loadSeenGenres();
+      seen.push(genre);
+      localStorage.setItem(GENRE_KEY, JSON.stringify(seen.slice(-6)));
+    }
 
     generateBtn.addEventListener("click", async () => {
-  const subject = subjectSelect.value;           // "math" or "ela"
+  const subject = subjectSelect.value;
   const topic = topicSelect.value;
   const difficulty = difficultySelect.value;
   const count = Math.max(1, Math.min(10, parseInt(countInput.value || "5", 10)));
+  const recentPrompts = loadSeenPrompts().slice(-20);
+  const recentGenres = loadSeenGenres();
 
   generateBtn.disabled = true;
   statusText.textContent = "Generating questions...";
@@ -261,7 +298,7 @@ subjectSelect.addEventListener("change", () => {
     const res = await fetch("/.netlify/functions/generate-questions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ subject, topic, difficulty, count })
+      body: JSON.stringify({ subject, topic, difficulty, count, recentPrompts, recentGenres })
     });
 
         if (!res.ok) {
@@ -270,6 +307,17 @@ subjectSelect.addEventListener("change", () => {
 
         const data = await res.json();
         currentQuestions = data.questions || [];
+        addToSeenPrompts(currentQuestions);
+        if (data.passageGenre) addToSeenGenres(data.passageGenre);
+
+        // Create a session in Supabase for this batch
+        currentSessionId = crypto.randomUUID();
+        fetch("/.netlify/functions/save-result", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "create_session", sessionId: currentSessionId, subject, difficulty }),
+        }).catch(err => console.error("Failed to create session:", err));
+
         renderQuestions();
         statusText.textContent = `Loaded ${currentQuestions.length} question(s).`;
       } catch (err) {
@@ -283,7 +331,10 @@ subjectSelect.addEventListener("change", () => {
 
     function renderQuestions() {
       questionsContainer.innerHTML = "";
+      let lastPassage = "";
       currentQuestions.forEach((q, idx) => {
+        if (q.passage) lastPassage = q.passage;
+        else if (q.topic === "reading") q = { ...q, passage: lastPassage };
         const card = document.createElement("div");
         card.className = "question-card";
 
@@ -355,11 +406,13 @@ subjectSelect.addEventListener("change", () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        subject: subjectSelect.value,        // "math" or "ela"
+        subject: subjectSelect.value,
         question: {
           prompt: q.prompt,
           choices: q.choices,
-          userIndex: chosenIndex
+          userIndex: chosenIndex,
+          correctIndex: q.correctIndex,
+          solution: q.solution
         }
       })
     });
@@ -378,6 +431,22 @@ subjectSelect.addEventListener("change", () => {
     } else {
       feedback.textContent = `Not quite. Correct answer is ${correctLetter}.`;
       feedback.className = "feedback incorrect";
+    }
+
+    // Save answer to Supabase
+    if (currentSessionId) {
+      fetch("/.netlify/functions/save-result", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "save_answer",
+          sessionId: currentSessionId,
+          subject: subjectSelect.value,
+          topic: q.topic || "mixed",
+          difficulty: q.difficulty || difficultySelect.value,
+          isCorrect: result.isCorrect,
+        }),
+      }).catch(err => console.error("Failed to save answer:", err));
     }
 
     // Optional: show solution explanation
