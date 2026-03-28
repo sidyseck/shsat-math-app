@@ -20,6 +20,34 @@ function formatExample(q) {
   return `Question: ${q.question}\nChoices: ${choices.map((c, i) => `${["A","B","C","D"][i]}) ${c}`).join(" | ")}\nCorrect answer: ${q.answer}`;
 }
 
+function parseChoiceToNumber(raw) {
+  if (raw == null) return NaN;
+  const cleaned = raw.replace(/,/g, "").trim().toLowerCase();
+
+  let m = cleaned.match(/^(-?\d+)\s+(\d+)\s*\/\s*(\d+)/);
+  if (m) {
+    const whole = parseInt(m[1], 10);
+    const num = parseInt(m[2], 10);
+    const den = parseInt(m[3], 10);
+    if (den !== 0) return whole + (whole >= 0 ? num / den : -num / den);
+  }
+
+  m = cleaned.match(/^(-?\d+)\s*\/\s*(\d+)/);
+  if (m) {
+    const num = parseInt(m[1], 10);
+    const den = parseInt(m[2], 10);
+    if (den !== 0) return num / den;
+  }
+
+  m = cleaned.match(/-?\d+(\.\d+)?/);
+  if (m) {
+    const val = parseFloat(m[0]);
+    if (!Number.isNaN(val)) return val;
+  }
+
+  return NaN;
+}
+
 function extractJson(text) {
   let depth = 0, start = -1, inString = false, escape = false;
   for (let i = 0; i < text.length; i++) {
@@ -293,26 +321,20 @@ Always return valid JSON only — no markdown, no commentary outside the JSON.`,
       const validQuestions = questions.filter(q => q && Array.isArray(q.choices) && q.choices.length === 4);
 
       const solveOne = async (q) => {
-        const solverPrompt = `Solve this SHSAT math question and identify the correct answer choice.
+        const solverPrompt = `Solve this SHSAT math question. Do NOT look at the answer choices — just solve it independently.
 
 Question:
 ${q.prompt}
 
-Choices:
-A) ${q.choices[0]}
-B) ${q.choices[1]}
-C) ${q.choices[2]}
-D) ${q.choices[3]}
-
 YOUR RESPONSE MUST BE ONLY RAW JSON — no prose, no markdown, no explanation outside the JSON.
 
 {
-  "correctIndex": 0,
+  "finalAnswer": 24,
   "solution": "concise step-by-step explanation (3-5 lines max)"
 }
 
 Rules:
-- correctIndex: 0 = A, 1 = B, 2 = C, 3 = D
+- finalAnswer must be a plain number (integer or decimal, no units, no commas)
 - solution: concise step-by-step explanation inside the JSON string
 - Do NOT write anything before or after the JSON object`;
 
@@ -345,10 +367,39 @@ Rules:
           const solverCleaned = solverContent.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
           const solverResult = JSON.parse(extractJson(solverCleaned) ?? solverCleaned);
 
-          const ci = solverResult.correctIndex;
-          if (!Number.isInteger(ci) || ci < 0 || ci >= q.choices.length) return null;
+          let finalAnswer;
+          if (typeof solverResult.finalAnswer === "number") {
+            finalAnswer = solverResult.finalAnswer;
+          } else {
+            const parsed = parseFloat(String(solverResult.finalAnswer).replace(/,/g, "").trim());
+            if (!Number.isNaN(parsed)) finalAnswer = parsed;
+          }
 
-          return { ...q, correctIndex: ci, correctAnswer: q.choices[ci], solution: solverResult.solution || "" };
+          if (typeof finalAnswer !== "number" || Number.isNaN(finalAnswer)) {
+            console.error("Solver did not return a usable finalAnswer:", solverResult);
+            return null;
+          }
+
+          // Try to match finalAnswer to an existing choice
+          const choices = [...q.choices];
+          let correctIndex = -1;
+          for (let i = 0; i < choices.length; i++) {
+            const num = parseChoiceToNumber(choices[i]);
+            if (!Number.isNaN(num) && Math.abs(num - finalAnswer) < 1e-6) {
+              correctIndex = i;
+              break;
+            }
+          }
+
+          // No matching choice — inject the correct answer at a random position
+          if (correctIndex === -1) {
+            const answerStr = Number.isInteger(finalAnswer) ? String(finalAnswer) : String(finalAnswer);
+            correctIndex = Math.floor(Math.random() * choices.length);
+            choices[correctIndex] = answerStr;
+            console.warn("Injected correct answer into choices:", { finalAnswer, correctIndex, choices });
+          }
+
+          return { ...q, choices, correctIndex, correctAnswer: choices[correctIndex], solution: solverResult.solution || "" };
         } catch (e) {
           console.error("Solver failed for question:", q.prompt, e);
           return null;
