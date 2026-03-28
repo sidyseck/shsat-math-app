@@ -336,7 +336,7 @@ subjectSelect.addEventListener("change", () => {
   currentQuestions = [];
 
   try {
-    const res = await fetch("/.netlify/functions/generate-questions", {
+    const res = await fetch("/api/generate-questions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ subject, topic, difficulty, count, recentPrompts, recentGenres })
@@ -353,7 +353,7 @@ subjectSelect.addEventListener("change", () => {
 
         // Create a session in Supabase for this batch
         currentSessionId = crypto.randomUUID();
-        fetch("/.netlify/functions/save-result", {
+        fetch("/api/save-result", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ action: "create_session", sessionId: currentSessionId, subject, difficulty, userId: window.currentUserId || null }),
@@ -443,7 +443,7 @@ subjectSelect.addEventListener("change", () => {
   feedback.className = "feedback";
 
   try {
-    const res = await fetch("/.netlify/functions/check-answer", {
+    const res = await fetch("/api/check-answer", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -476,7 +476,7 @@ subjectSelect.addEventListener("change", () => {
 
     // Save answer to Supabase
     if (currentSessionId) {
-      fetch("/.netlify/functions/save-result", {
+      fetch("/api/save-result", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -557,7 +557,7 @@ subjectSelect.addEventListener("change", () => {
       document.getElementById("login-btn").textContent = "Checking...";
 
       try {
-        const res = await fetch("/.netlify/functions/get-user", {
+        const res = await fetch("/api/get-user", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ uid }),

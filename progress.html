@@ -144,7 +144,7 @@ async function load() {
 
   let data;
   try {
-    const res = await fetch(`/.netlify/functions/get-stats?userId=${encodeURIComponent(user.uid)}`);
+    const res = await fetch(`/api/get-stats?userId=${encodeURIComponent(user.uid)}`);
     if (!res.ok) throw new Error("Server error " + res.status);
     data = await res.json();
   } catch (err) {
