@@ -45,8 +45,7 @@ module.exports = async (req, res) => {
     const topic = body.topic || "mixed";
     const difficulty = body.difficulty || "medium";
     const count = Math.max(1, Math.min(10, Number(body.count) || 5));
-    // Request extra for math so discards don't leave the user short
-    const generateCount = subject === "math" ? Math.min(count + 3, 13) : count;
+    const generateCount = subject === "math" ? Math.min(count + 2, 12) : count;
     const recentPrompts = Array.isArray(body.recentPrompts) ? body.recentPrompts.slice(0, 20) : [];
     const recentGenres = Array.isArray(body.recentGenres) ? body.recentGenres.slice(0, 6) : [];
 
@@ -273,8 +272,6 @@ SHSAT-specific rules:
     let questions = questionsPayload.questions;
 
     if (subject === "math") {
-      const validQuestions = questions.filter(q => q && q.prompt);
-
       // For each question: solve independently, generate distractors, shuffle all 4.
       const solveOne = async (q) => {
         try {
@@ -421,8 +418,64 @@ Rules:
         }
       };
 
-      const results = await Promise.all(validQuestions.map(solveOne));
-      questions = results.filter(Boolean).slice(0, count);
+      // Retry loop: keep generating until we have `count` valid questions
+      // or we've attempted `count * 2` total questions (token cap).
+      const maxAttempts = count * 2;
+      let validAccumulated = [];
+      let totalAttempted = 0;
+
+      // Process the first batch we already have
+      let firstBatch = questions.filter(q => q && q.prompt);
+      totalAttempted += firstBatch.length;
+      const firstResults = await Promise.all(firstBatch.map(solveOne));
+      validAccumulated = firstResults.filter(Boolean);
+
+      // Retry batches if still short
+      while (validAccumulated.length < count && totalAttempted < maxAttempts) {
+        const needed = count - validAccumulated.length;
+        const canRequest = Math.min(needed + 2, maxAttempts - totalAttempted);
+        if (canRequest <= 0) break;
+
+        console.log(`Retry: have ${validAccumulated.length}/${count}, requesting ${canRequest} more`);
+
+        // Build a fresh prompt for just the remaining questions needed
+        const retryPromptLines = userPrompt.replace(
+          /There should be exactly \d+ questions\./,
+          `There should be exactly ${canRequest} questions.`
+        );
+
+        let retryPayload;
+        try {
+          const retryRes = await fetch("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: { "x-api-key": apiKey, "anthropic-version": "2023-06-01", "Content-Type": "application/json" },
+            body: JSON.stringify({
+              model: "claude-sonnet-4-6",
+              max_tokens: 8192,
+              system: `You are an expert SHSAT test prep tutor. Generate questions at the EXACT difficulty level of the real SHSAT exam administered by the NYC DOE. Always return valid JSON only — no markdown, no commentary outside the JSON.`,
+              messages: [{ role: "user", content: retryPromptLines }],
+              temperature: 0.7,
+            }),
+          });
+          if (!retryRes.ok) break;
+          const retryData = await retryRes.json();
+          const retryText = retryData.content?.[0]?.text;
+          if (!retryText) break;
+          const retryCleaned = retryText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+          retryPayload = JSON.parse(extractJson(retryCleaned) ?? retryCleaned);
+        } catch (e) {
+          console.error("Retry generation failed:", e);
+          break;
+        }
+
+        const retryQuestions = (retryPayload?.questions || []).filter(q => q && q.prompt);
+        totalAttempted += retryQuestions.length;
+        const retryResults = await Promise.all(retryQuestions.map(solveOne));
+        validAccumulated = validAccumulated.concat(retryResults.filter(Boolean));
+      }
+
+      questions = validAccumulated.slice(0, count);
+      console.log(`Final: ${questions.length}/${count} questions after ${totalAttempted} attempts`);
     } else {
       questions = questions.filter(q => q && Array.isArray(q.choices) && q.choices.length === 4);
     }
