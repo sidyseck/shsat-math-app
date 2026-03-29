@@ -373,6 +373,7 @@ subjectSelect.addEventListener("change", () => {
     function renderQuestions() {
       questionsContainer.innerHTML = "";
       let lastPassage = "";
+      const renderedSubject = subjectSelect.value;
       currentQuestions.forEach((q, idx) => {
         if (q.passage) lastPassage = q.passage;
         else if (q.topic === "reading") q = { ...q, passage: lastPassage };
@@ -447,7 +448,7 @@ subjectSelect.addEventListener("change", () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        subject: subjectSelect.value,
+        subject: renderedSubject,
         question: {
           prompt: q.prompt,
           choices: q.choices,
