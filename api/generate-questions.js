@@ -396,10 +396,21 @@ Rules:
           const choices = pool.map(x => String(x.val));
 
           // Sanity check: correctIndex must point to a choice that parses back to finalAnswer.
-          // This should never fail by design, but if it does we discard rather than show a broken question.
           const verifyNum = parseFloat(choices[correctIndex]);
           if (Math.abs(verifyNum - finalAnswer) > 1e-6) {
             console.error("Quality check failed: finalAnswer not found in choices", { finalAnswer, choices, correctIndex });
+            return null;
+          }
+
+          // Discard if the solver showed signs of confusion — these indicate a broken question.
+          const confusionPhrases = [
+            "let me redo", "let me recheck", "let me recalculate", "let me re-",
+            "wait,", "wait.", "hmm", "not integer", "doesn't work", "that's not",
+            "let me try", "try again", "re-examine", "actually,", "actually.",
+          ];
+          const solutionLower = solution.toLowerCase();
+          if (confusionPhrases.some(p => solutionLower.includes(p))) {
+            console.warn("Discarding question: solver showed confusion in solution", { prompt: q.prompt, solution });
             return null;
           }
 
