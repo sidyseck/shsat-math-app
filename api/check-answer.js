@@ -55,14 +55,34 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: "Missing or invalid question data" });
     }
 
-    const { prompt, choices, userIndex, correctIndex: precomputedIndex, solution: precomputedSolution } = question;
+    const { prompt, choices, userIndex, correctIndex: precomputedIndex, correctAnswer, solution: precomputedSolution } = question;
 
-    if (subject === "math" && Number.isInteger(precomputedIndex) && precomputedIndex >= 0 && precomputedIndex < choices.length) {
-      return res.status(200).json({
-        correctIndex: precomputedIndex,
-        isCorrect: userIndex === precomputedIndex,
-        solution: precomputedSolution || "",
-      });
+    if (subject === "math" && precomputedSolution) {
+      // Re-derive correctIndex by numerically matching correctAnswer against choices.
+      // This is immune to any index drift that happened at generation time.
+      let correctIndex = -1;
+      if (correctAnswer != null) {
+        const target = parseChoiceToNumber(String(correctAnswer));
+        if (!Number.isNaN(target)) {
+          for (let i = 0; i < choices.length; i++) {
+            if (Math.abs(parseChoiceToNumber(choices[i]) - target) < 1e-6) {
+              correctIndex = i;
+              break;
+            }
+          }
+        }
+      }
+      // Fall back to precomputedIndex if value matching failed
+      if (correctIndex === -1 && Number.isInteger(precomputedIndex) && precomputedIndex >= 0 && precomputedIndex < choices.length) {
+        correctIndex = precomputedIndex;
+      }
+      if (correctIndex !== -1) {
+        return res.status(200).json({
+          correctIndex,
+          isCorrect: userIndex === correctIndex,
+          solution: precomputedSolution,
+        });
+      }
     }
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
