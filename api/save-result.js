@@ -65,6 +65,33 @@ module.exports = async (req, res) => {
       return res.status(200).json({ ok: true });
     }
 
+    // Report a bad question/answer
+    if (action === "report_error") {
+      const { questionPrompt, choices, correctIndex, solution } = body;
+      const supabaseRes = await fetch(`${supabaseUrl}/rest/v1/error_reports`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          user_id: userId || null,
+          subject: subject || null,
+          topic: topic || null,
+          difficulty: difficulty || null,
+          question_prompt: questionPrompt || null,
+          choices: choices ? JSON.stringify(choices) : null,
+          correct_index: Number.isInteger(correctIndex) ? correctIndex : null,
+          solution: solution || null,
+        }),
+      });
+
+      if (!supabaseRes.ok) {
+        const err = await supabaseRes.text();
+        console.error("Supabase error_reports insert error:", err);
+        return res.status(500).json({ error: "Failed to save error report" });
+      }
+
+      return res.status(200).json({ ok: true });
+    }
+
     return res.status(400).json({ error: "Unknown action" });
 
   } catch (err) {

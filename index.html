@@ -200,6 +200,9 @@
     <p class="subtitle">
       Choose a topic and difficulty, generate a small set of questions, and practice. Answers are checked locally.
     </p>
+    <p style="font-size:0.75rem;color:#64748b;margin:-8px 0 14px;line-height:1.5;">
+      ⚠️ Questions and answers are AI-generated and may occasionally be incorrect. Always verify your work independently. Use the "Report error" button if you spot a mistake.
+    </p>
 
     <div class="controls">
   <div>
@@ -501,6 +504,31 @@ subjectSelect.addEventListener("change", () => {
       expl.textContent = result.solution;
       card.appendChild(expl);
     }
+
+    // Report error button
+    const reportBtn = document.createElement("button");
+    reportBtn.textContent = "Report error";
+    reportBtn.style.cssText = "margin-top:8px;font-size:0.72rem;background:none;border:1px solid rgba(239,68,68,0.4);color:#f87171;padding:4px 10px;border-radius:999px;cursor:pointer;font-weight:500;";
+    reportBtn.addEventListener("click", async () => {
+      reportBtn.disabled = true;
+      reportBtn.textContent = "Reported ✓";
+      fetch("/api/save-result", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "report_error",
+          userId: window.currentUserId || null,
+          subject: renderedSubject,
+          topic: q.topic || "mixed",
+          difficulty: q.difficulty || difficultySelect.value,
+          questionPrompt: q.prompt,
+          choices: q.choices,
+          correctIndex: result.correctIndex,
+          solution: result.solution || "",
+        }),
+      }).catch(err => console.error("Failed to report error:", err));
+    });
+    card.appendChild(reportBtn);
 
   } catch (err) {
     console.error(err);
