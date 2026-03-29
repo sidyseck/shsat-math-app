@@ -395,6 +395,14 @@ Rules:
           const correctIndex = pool.findIndex(x => x.isCorrect);
           const choices = pool.map(x => String(x.val));
 
+          // Sanity check: correctIndex must point to a choice that parses back to finalAnswer.
+          // This should never fail by design, but if it does we discard rather than show a broken question.
+          const verifyNum = parseFloat(choices[correctIndex]);
+          if (Math.abs(verifyNum - finalAnswer) > 1e-6) {
+            console.error("Quality check failed: finalAnswer not found in choices", { finalAnswer, choices, correctIndex });
+            return null;
+          }
+
           return { ...q, choices, correctIndex, correctAnswer: String(finalAnswer), solution };
         } catch (e) {
           console.error("solveOne failed:", q.prompt, e);
