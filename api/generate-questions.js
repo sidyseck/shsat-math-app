@@ -87,7 +87,7 @@ module.exports = async (req, res) => {
     if (subject === "math") {
       userPrompt = `Your job:
 - Create questions that look, feel, and behave like real NYC SHSAT Math questions.
-- Do NOT include the correct answer or any solution. Just write the question and answer choices.
+- CRITICAL: For each question, solve it yourself first to get the exact correct answer. Then build the 4 answer choices so that one of them IS that correct answer. Do not output the label, but the correct value must be present as one of the choices.
 
 Core style (very important):
 - Match the difficulty and flavor of official NYCDOE SHSAT math questions (2024 samples).
@@ -126,12 +126,13 @@ Numbers and realism:
 Answer choices:
 - Each question must have EXACTLY 4 answer choices (A, B, C, D).
 - Choices MUST be numeric (integers, fractions, or decimals).
-- Wrong choices must be plausible distractors that come from:
+- One choice MUST be the exact correct answer (do not label or identify it in the JSON).
+- The other three are plausible distractors that come from:
   - common misreads (missing a condition),
   - forgetting to convert a percent or rate correctly,
   - using the wrong total/denominator in a ratio,
   - making a typical order-of-operations or equation setup error.
-- Do NOT say or hint which choice is correct.
+- Do NOT label or hint which choice is correct in the JSON output.
 - Do NOT include phrases like "Correct answer:", "The answer is", or any solution steps.
 
 Constraints:
