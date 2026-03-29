@@ -20,34 +20,6 @@ function formatExample(q) {
   return `Question: ${q.question}\nChoices: ${choices.map((c, i) => `${["A","B","C","D"][i]}) ${c}`).join(" | ")}\nCorrect answer: ${q.answer}`;
 }
 
-function parseChoiceToNumber(raw) {
-  if (raw == null) return NaN;
-  const cleaned = raw.replace(/,/g, "").trim().toLowerCase();
-
-  let m = cleaned.match(/^(-?\d+)\s+(\d+)\s*\/\s*(\d+)/);
-  if (m) {
-    const whole = parseInt(m[1], 10);
-    const num = parseInt(m[2], 10);
-    const den = parseInt(m[3], 10);
-    if (den !== 0) return whole + (whole >= 0 ? num / den : -num / den);
-  }
-
-  m = cleaned.match(/^(-?\d+)\s*\/\s*(\d+)/);
-  if (m) {
-    const num = parseInt(m[1], 10);
-    const den = parseInt(m[2], 10);
-    if (den !== 0) return num / den;
-  }
-
-  m = cleaned.match(/-?\d+(\.\d+)?/);
-  if (m) {
-    const val = parseFloat(m[0]);
-    if (!Number.isNaN(val)) return val;
-  }
-
-  return NaN;
-}
-
 function extractJson(text) {
   let depth = 0, start = -1, inString = false, escape = false;
   for (let i = 0; i < text.length; i++) {
@@ -73,6 +45,7 @@ module.exports = async (req, res) => {
     const topic = body.topic || "mixed";
     const difficulty = body.difficulty || "medium";
     const count = Math.max(1, Math.min(10, Number(body.count) || 5));
+    // Request extra for math so discards don't leave the user short
     const generateCount = subject === "math" ? Math.min(count + 3, 13) : count;
     const recentPrompts = Array.isArray(body.recentPrompts) ? body.recentPrompts.slice(0, 20) : [];
     const recentGenres = Array.isArray(body.recentGenres) ? body.recentGenres.slice(0, 6) : [];
@@ -87,7 +60,7 @@ module.exports = async (req, res) => {
     if (subject === "math") {
       userPrompt = `Your job:
 - Create questions that look, feel, and behave like real NYC SHSAT Math questions.
-- CRITICAL: For each question, solve it yourself first to get the exact correct answer. Then build the 4 answer choices so that one of them IS that correct answer. Do not output the label, but the correct value must be present as one of the choices.
+- Do NOT include answer choices — only write the question text. Choices will be generated separately.
 
 Core style (very important):
 - Match the difficulty and flavor of official NYCDOE SHSAT math questions (2024 samples).
@@ -110,35 +83,22 @@ Topic coverage:
 - Topics allowed: fractions, ratios, proportions, percentages (including percent increase/decrease), simple and multi-step equations, inequalities, integer arithmetic, absolute value in context, geometry (described in words), basic probability, averages, and interpreting small data tables in words.
 - Use the provided topic preference:
   - If topic === "mixed": mix across common SHSAT math topics.
-  - Otherwise, focus primarily on that topic but still allow secondary concepts to appear (for example, a geometry problem that also requires solving an equation).
+  - Otherwise, focus primarily on that topic but still allow secondary concepts to appear.
 
 Difficulty:
 - Difficulty: ${difficulty} (easy / medium / hard).
 - "Easy": still multi-step, but with cleaner numbers and fewer conditions.
-- "Medium": realistic SHSAT average difficulty with 3 to 4 steps and at least one trap (e.g., extra information or a subtle condition).
-- "Hard": 4 to 5 steps, layered conditions, or combined topics (e.g., percent + ratio, geometry + algebra). The path to the answer should not be obvious.
+- "Medium": realistic SHSAT average difficulty with 3 to 4 steps and at least one trap.
+- "Hard": 4 to 5 steps, layered conditions, or combined topics. The path to the answer should not be obvious.
 
 Numbers and realism:
-- Use mostly non-trivial numbers (e.g., 18, 27, 45, 72, 150, 240) rather than very small or "too clean" ones, unless the difficulty is easy.
-- Allow fractions or decimals in choices when natural (e.g., 1.5, 2.4, 3/5).
+- Use numbers that yield clean integer or simple decimal answers (e.g. 0.5, 1.5, 2.5, 0.25).
 - Keep arithmetic within what a strong 8th grader can do without a calculator.
-
-Answer choices:
-- Each question must have EXACTLY 4 answer choices (A, B, C, D).
-- Choices MUST be numeric (integers, fractions, or decimals).
-- One choice MUST be the exact correct answer (do not label or identify it in the JSON).
-- The other three are plausible distractors that come from:
-  - common misreads (missing a condition),
-  - forgetting to convert a percent or rate correctly,
-  - using the wrong total/denominator in a ratio,
-  - making a typical order-of-operations or equation setup error.
-- Do NOT label or hint which choice is correct in the JSON output.
-- Do NOT include phrases like "Correct answer:", "The answer is", or any solution steps.
 
 Constraints:
 - Only math; NO reading-comprehension-style questions.
-- NO diagrams, NO graphs, NO images. If needed, describe any table or situation in words.
-- Questions must be solvable without a calculator by a well-prepared SHSAT test-taker within about 1–3 minutes.
+- NO diagrams, NO graphs, NO images. Describe any table or situation in words.
+- Questions must be solvable without a calculator by a well-prepared SHSAT test-taker.
 
 Output format (strict JSON only):
 Return ONLY valid JSON with this exact shape:
@@ -147,7 +107,6 @@ Return ONLY valid JSON with this exact shape:
   "questions": [
     {
       "prompt": "question text here",
-      "choices": ["choice A", "choice B", "choice C", "choice D"],
       "topic": "percent | ratios | algebra | geometry | mixed",
       "difficulty": "easy | medium | hard"
     }
@@ -273,15 +232,9 @@ ${readingCount > 0 ? `READING COMPREHENSION examples:\n${pickExamples("ela", "re
         system: `You are an expert SHSAT test prep tutor. Generate questions at the EXACT difficulty level of the real SHSAT exam administered by the NYC DOE.
 
 SHSAT-specific rules:
-- Scrambled Paragraphs: sentences must have subtle logical traps where 2-3 orderings seem plausible
-- Logical Reasoning: use multi-step deductions, NOT obvious one-step logic
-- Reading Comprehension: base questions on dense, complex passages (science, history, philosophy); ask about implied meaning, author's purpose, tone — never just literal recall
+- Reading Comprehension: base questions on dense, complex passages; ask about implied meaning, author's purpose, tone — never just literal recall
 - Math: include 2-3 step word problems, number theory, geometry with algebraic unknowns, and combinatorics
-- Wrong answer choices must be "attractive wrong answers" — common misconceptions or off-by-one errors
-
-After generating each question, self-critique: "Would an 8th grader find this trivially easy?" If yes, increase complexity before outputting.
-
-Always return valid JSON only — no markdown, no commentary outside the JSON.`,
+- Always return valid JSON only — no markdown, no commentary outside the JSON.`,
         messages: [
           { role: "user", content: userPrompt },
         ],
@@ -320,15 +273,18 @@ Always return valid JSON only — no markdown, no commentary outside the JSON.`,
     let questions = questionsPayload.questions;
 
     if (subject === "math") {
-      const validQuestions = questions.filter(q => q && Array.isArray(q.choices) && q.choices.length === 4);
+      const validQuestions = questions.filter(q => q && q.prompt);
 
+      // For each question: solve independently, generate distractors, shuffle all 4.
       const solveOne = async (q) => {
-        const solverPrompt = `Solve this SHSAT math question. Do NOT look at the answer choices — just solve it independently.
+        try {
+          // ── Step 1: Solve ─────────────────────────────────────────────────
+          const solverPrompt = `Solve this SHSAT math question step by step.
 
 Question:
 ${q.prompt}
 
-YOUR RESPONSE MUST BE ONLY RAW JSON — no prose, no markdown, no explanation outside the JSON.
+Return ONLY valid JSON — no prose, no markdown, nothing outside the JSON:
 
 {
   "finalAnswer": 24,
@@ -337,36 +293,26 @@ YOUR RESPONSE MUST BE ONLY RAW JSON — no prose, no markdown, no explanation ou
 
 Rules:
 - finalAnswer must be a plain number (integer or decimal, no units, no commas)
-- solution: concise step-by-step explanation inside the JSON string
-- Do NOT write anything before or after the JSON object`;
+- Do NOT write anything before or after the JSON`;
 
-        try {
-          const solverResponse = await fetch("https://api.anthropic.com/v1/messages", {
+          const solverRes = await fetch("https://api.anthropic.com/v1/messages", {
             method: "POST",
-            headers: {
-              "x-api-key": apiKey,
-              "anthropic-version": "2023-06-01",
-              "Content-Type": "application/json",
-            },
+            headers: { "x-api-key": apiKey, "anthropic-version": "2023-06-01", "Content-Type": "application/json" },
             body: JSON.stringify({
               model: "claude-sonnet-4-6",
-              max_tokens: 2048,
+              max_tokens: 1024,
               system: "You are a careful SHSAT math solver. Always return valid JSON.",
               messages: [{ role: "user", content: solverPrompt }],
               temperature: 0.1,
             }),
           });
 
-          if (!solverResponse.ok) {
-            console.error("Solver API error:", await solverResponse.text());
-            return null;
-          }
+          if (!solverRes.ok) { console.error("Solver error:", await solverRes.text()); return null; }
+          const solverData = await solverRes.json();
+          const solverText = solverData.content?.[0]?.text;
+          if (!solverText) return null;
 
-          const solverData = await solverResponse.json();
-          const solverContent = solverData.content?.[0]?.text;
-          if (!solverContent) return null;
-
-          const solverCleaned = solverContent.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+          const solverCleaned = solverText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
           const solverResult = JSON.parse(extractJson(solverCleaned) ?? solverCleaned);
 
           let finalAnswer;
@@ -376,43 +322,82 @@ Rules:
             const parsed = parseFloat(String(solverResult.finalAnswer).replace(/,/g, "").trim());
             if (!Number.isNaN(parsed)) finalAnswer = parsed;
           }
-
           if (typeof finalAnswer !== "number" || Number.isNaN(finalAnswer)) {
             console.error("Solver did not return a usable finalAnswer:", solverResult);
             return null;
           }
+          const solution = solverResult.solution || "";
 
-          // If all choices are integers but the answer isn't, the question is mathematically
-          // broken — discard it rather than injecting a non-integer into integer choices.
-          const choiceNums = q.choices.map(c => parseChoiceToNumber(c));
-          const allChoicesAreIntegers = choiceNums.every(n => !Number.isNaN(n) && Number.isInteger(n));
-          if (allChoicesAreIntegers && !Number.isInteger(finalAnswer)) {
-            console.warn("Discarding broken question (integer choices but non-integer answer):", { finalAnswer, prompt: q.prompt });
+          // ── Step 2: Generate 3 distractors ────────────────────────────────
+          const distractorPrompt = `A student is solving this math question. The correct answer is ${finalAnswer}.
+
+Question: ${q.prompt}
+
+Generate exactly 3 wrong answer choices a student might arrive at from common errors such as:
+- Skipping a step or misreading a condition in the problem
+- Using the wrong formula or operation
+- Making a percent, ratio, or fraction conversion error
+- Arithmetic error in the middle of multi-step work
+
+Return ONLY valid JSON — no prose, no markdown, nothing outside the JSON:
+
+{
+  "distractors": [wrong1, wrong2, wrong3]
+}
+
+Rules:
+- All values must be numbers (integers or decimals matching the format of ${finalAnswer})
+- None may equal ${finalAnswer}
+- Make them close and believable — not obviously wrong`;
+
+          const distRes = await fetch("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: { "x-api-key": apiKey, "anthropic-version": "2023-06-01", "Content-Type": "application/json" },
+            body: JSON.stringify({
+              model: "claude-sonnet-4-6",
+              max_tokens: 256,
+              system: "You are a math educator generating plausible wrong answers. Always return valid JSON.",
+              messages: [{ role: "user", content: distractorPrompt }],
+              temperature: 0.7,
+            }),
+          });
+
+          if (!distRes.ok) { console.error("Distractor error:", await distRes.text()); return null; }
+          const distData = await distRes.json();
+          const distText = distData.content?.[0]?.text;
+          if (!distText) return null;
+
+          const distCleaned = distText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+          const distResult = JSON.parse(extractJson(distCleaned) ?? distCleaned);
+
+          if (!Array.isArray(distResult.distractors) || distResult.distractors.length < 3) {
+            console.error("Distractor call returned invalid result:", distResult);
+            return null;
+          }
+          const distractors = distResult.distractors
+            .slice(0, 3)
+            .map(Number)
+            .filter(n => !Number.isNaN(n) && Math.abs(n - finalAnswer) > 1e-6);
+          if (distractors.length < 3) {
+            console.error("Not enough valid distractors:", distResult);
             return null;
           }
 
-          // Try to match finalAnswer to an existing choice
-          const choices = [...q.choices];
-          let correctIndex = -1;
-          for (let i = 0; i < choices.length; i++) {
-            const num = parseChoiceToNumber(choices[i]);
-            if (!Number.isNaN(num) && Math.abs(num - finalAnswer) < 1e-6) {
-              correctIndex = i;
-              break;
-            }
+          // ── Step 3: Shuffle all 4 answers ─────────────────────────────────
+          const pool = [
+            { val: finalAnswer, isCorrect: true },
+            ...distractors.map(d => ({ val: d, isCorrect: false })),
+          ];
+          for (let i = pool.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [pool[i], pool[j]] = [pool[j], pool[i]];
           }
+          const correctIndex = pool.findIndex(x => x.isCorrect);
+          const choices = pool.map(x => String(x.val));
 
-          // No matching choice — inject the correct answer at a random position
-          if (correctIndex === -1) {
-            const answerStr = Number.isInteger(finalAnswer) ? String(finalAnswer) : String(finalAnswer);
-            correctIndex = Math.floor(Math.random() * choices.length);
-            choices[correctIndex] = answerStr;
-            console.warn("Injected correct answer into choices:", { finalAnswer, correctIndex, choices });
-          }
-
-          return { ...q, choices, correctIndex, correctAnswer: choices[correctIndex], solution: solverResult.solution || "" };
+          return { ...q, choices, correctIndex, correctAnswer: String(finalAnswer), solution };
         } catch (e) {
-          console.error("Solver failed for question:", q.prompt, e);
+          console.error("solveOne failed:", q.prompt, e);
           return null;
         }
       };
