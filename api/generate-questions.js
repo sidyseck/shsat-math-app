@@ -73,6 +73,7 @@ module.exports = async (req, res) => {
     const topic = body.topic || "mixed";
     const difficulty = body.difficulty || "medium";
     const count = Math.max(1, Math.min(10, Number(body.count) || 5));
+    const generateCount = subject === "math" ? Math.min(count + 3, 13) : count;
     const recentPrompts = Array.isArray(body.recentPrompts) ? body.recentPrompts.slice(0, 20) : [];
     const recentGenres = Array.isArray(body.recentGenres) ? body.recentGenres.slice(0, 6) : [];
 
@@ -152,7 +153,7 @@ Return ONLY valid JSON with this exact shape:
   ]
 }
 
-There should be exactly ${count} questions.
+There should be exactly ${generateCount} questions.
 
 Here are real SHSAT math questions from the official NYC DOE sample test. Match their style, complexity, and phrasing exactly:
 
@@ -380,6 +381,15 @@ Rules:
             return null;
           }
 
+          // If all choices are integers but the answer isn't, the question is mathematically
+          // broken — discard it rather than injecting a non-integer into integer choices.
+          const choiceNums = q.choices.map(c => parseChoiceToNumber(c));
+          const allChoicesAreIntegers = choiceNums.every(n => !Number.isNaN(n) && Number.isInteger(n));
+          if (allChoicesAreIntegers && !Number.isInteger(finalAnswer)) {
+            console.warn("Discarding broken question (integer choices but non-integer answer):", { finalAnswer, prompt: q.prompt });
+            return null;
+          }
+
           // Try to match finalAnswer to an existing choice
           const choices = [...q.choices];
           let correctIndex = -1;
@@ -407,7 +417,7 @@ Rules:
       };
 
       const results = await Promise.all(validQuestions.map(solveOne));
-      questions = results.filter(Boolean);
+      questions = results.filter(Boolean).slice(0, count);
     } else {
       questions = questions.filter(q => q && Array.isArray(q.choices) && q.choices.length === 4);
     }
